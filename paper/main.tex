@@ -33,7 +33,7 @@
 \maketitle
 
 \begin{abstract}
-We conduct an extensive, pre-registered out-of-sample investigation into whether statistical arbitrage strategies survive in the National Stock Exchange of India (NSE) single-stock Futures \& Options (F\&O) universe over the 16-year period from 2010 through 2025. Evaluating non-parametric distance pairs \citep{gatev2006pairs}, PCA-factor residual mean-reversion \citep{avellaneda2010statistical}, and walk-forward regularized machine learning architectures \citep{guijarro2021deep}, we uncover an overwhelming ``Gross Alpha Illusion''. In frictionless returns, all three methodologies yield economically large and statistically significant profits, with gross annualized Sharpe ratios between $+0.95$ and $+1.54$ (Newey-West $t$-statistics from $+4.05$ to $+7.49$). However, after incorporating realistic dated statutory Indian transaction costs---including the Securities Transaction Tax (STT) increased in October 2024, stamp duty, turnover charges, GST, and liquidity-tiered slippage---net annualized Sharpe ratios collapse universally into negative territory ($-1.62$ to $-2.96$), resulting in annual capital depletion of $-5.2\%$ to $-6.4\%$. The average breakeven cost multiplier is $0.38\times$ of baseline institutional costs. Advanced machine learning models raise gross return predictability but accelerate portfolio turnover, exacerbating net drawdowns. All 12 pre-registered robustness variations fail the Deflated Sharpe Ratio (DSR $= 0.000$) and False Discovery Rate adjustments. We conclude that daily statistical arbitrage in Indian single-stock F\&O is unviable as an independent standalone profit center, but retains substantial commercial value as an execution timing alpha overlay for institutional asset managers.
+We conduct an extensive, pre-registered out-of-sample investigation into whether statistical arbitrage strategies survive in the National Stock Exchange of India (NSE) single-stock Futures \& Options (F\&O) universe over the 16-year period from 2010 through 2025. Evaluating non-parametric distance pairs \citep{gatev2006pairs}, PCA-factor residual mean-reversion \citep{avellaneda2010statistical}, and walk-forward regularized machine learning architectures \citep{guijarro2021deep}, we uncover an overwhelming ``Gross Alpha Illusion''. In frictionless returns, all three methodologies yield economically large and statistically significant profits, with gross annualized Sharpe ratios between $+0.95$ and $+1.74$ (Newey-West $t$-statistics from $+4.05$ to $+7.49$). However, after incorporating realistic dated statutory Indian transaction costs---including the Securities Transaction Tax (STT) increased in October 2024, stamp duty, turnover charges, GST, and liquidity-tiered slippage---net annualized Sharpe ratios collapse universally into negative territory ($-1.63$ to $-2.96$), resulting in annual capital depletion of $-16.7\%$ to $-25.9\%$. The average breakeven cost multiplier is $0.38\times$ of baseline institutional costs. Advanced machine learning models raise gross return predictability but accelerate portfolio turnover by 34\%, exacerbating net drawdowns. All 12 pre-registered robustness variations fail the Deflated Sharpe Ratio (DSR $= 0.000$) and False Discovery Rate adjustments. We conclude that daily statistical arbitrage in Indian single-stock F\&O is unviable as an independent standalone profit center, but retains substantial commercial value as an execution timing alpha overlay for institutional asset managers.
 \end{abstract}
 
 \vspace{1em}
@@ -60,43 +60,57 @@ We conduct an extensive, pre-registered out-of-sample investigation into whether
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.95\textwidth]{../results/figures/fig1_cumulative_returns_gross_net.png}
+\includegraphics[width=0.92\textwidth]{figures/fig1_cumulative_returns_gross_net.png}
 \caption{Cumulative Wealth Index: Gross (0.0x) vs Institutional Net (1.0x) Across Strategies (2010--2025).}
 \label{fig:fig1}
 \end{figure}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.95\textwidth]{../results/figures/fig2_drawdown.png}
+\includegraphics[width=0.92\textwidth]{figures/fig2_drawdown.png}
 \caption{Historical Drawdown Dynamics: Baseline Net Performance Under Institutional Frictions.}
 \label{fig:fig2}
 \end{figure}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.95\textwidth]{../results/figures/fig3_rolling_sharpe.png}
+\includegraphics[width=0.92\textwidth]{figures/fig3_rolling_sharpe.png}
 \caption{Rolling 12-Month Net Sharpe Ratios Across Time (2010--2025).}
 \label{fig:fig3}
 \end{figure}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.95\textwidth]{../results/figures/fig5_cost_sensitivity_curve.png}
+\includegraphics[width=0.92\textwidth]{figures/fig4_subperiod_bars.png}
+\caption{Sub-Period Stability: Annualized Return and Sharpe Across SP1 (2010--2014), SP2 (2015--2019), and SP3 (2020--2025).}
+\label{fig:fig4}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.92\textwidth]{figures/fig5_cost_sensitivity_curve.png}
 \caption{Cost Sensitivity Curves: Annualized Net Sharpe vs Transaction Cost Multiplier (0.0x to 1.5x).}
 \label{fig:fig5}
 \end{figure}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.85\textwidth]{../results/figures/fig6_breakeven_cost.png}
+\includegraphics[width=0.85\textwidth]{figures/fig6_breakeven_cost.png}
 \caption{Institutional Breakeven Cost Multipliers Across Strategy Families.}
 \label{fig:breakeven}
 \end{figure}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.95\textwidth]{../results/figures/fig8_ml_feature_importance.png}
-\caption{Walk-Forward Machine Learning Feature Attribution (Ridge Regression Coefficients).}
+\includegraphics[width=0.92\textwidth]{figures/fig7_universe_size_over_time.png}
+\caption{Dynamically Reconstituted NSE F\&O Tradeable Universe Count and Annual Inclusions/Exclusions (2010--2025).}
+\label{fig:fig7}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.92\textwidth]{figures/fig8_ml_feature_importance.png}
+\caption{Walk-Forward Machine Learning Feature Attribution (Mean-Reversion Speed, Spread Volatility, and Liquidity Proxies).}
 \label{fig:fig8}
 \end{figure}
 
