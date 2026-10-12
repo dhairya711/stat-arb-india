@@ -1,4 +1,4 @@
-﻿# Alpha Hunt India — Project Configuration
+# Alpha Hunt India — Project Configuration
 # ALL parameters live here. Nothing is hard-coded in any script.
 # Edit this file to run any variant. Do not change values after pre-registration without
 # adding a dated entry to PREREG.md Deviations section.
@@ -22,9 +22,9 @@ sub_periods:
 
 crash_episodes:
   covid:         ["2020-02-19", "2020-03-31"]
-  demonetisation:["2016-11-08", "2016-12-31"]
+  demonetisation: ["2016-11-08", "2016-12-31"]
   selloff_2022:  ["2022-01-01", "2022-06-30"]
-  post_sebi_2024:["2024-10-01", "2025-12-31"]
+  post_sebi_2024: ["2024-10-01", "2025-12-31"]
 
 # ─── UNIVERSE RULES ──────────────────────────────────────────────────────────
 universe:
