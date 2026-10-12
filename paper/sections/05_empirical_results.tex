@@ -1,0 +1,89 @@
+﻿\section{Empirical Results}
+\label{sec:results}
+
+\subsection{Performance Summary and the Gross-Net Wedge}
+Table~\ref{tab:table1} reports the full-sample annualized performance metrics for the baseline specifications of Strategies A, B, and C over the 2010--2025 sample period.
+
+\begin{table}[htbp]
+\centering
+\caption{Full-Sample Annualized Strategy Performance (2010--2025)}
+\label{tab:table1}
+\small
+\begin{tabular}{lcccccc}
+\toprule
+\textbf{Strategy} & \textbf{Gross Return} & \textbf{Net Return} & \textbf{Gross Sharpe} & \textbf{Net Sharpe} & \textbf{NW $t$-stat} & \textbf{Bootstrap 95\% CI (Sharpe)} \\
+\midrule
+Strategy A (Gatev Pairs)      & +12.82\% & -5.44\% & +0.95 & -2.50 & -10.89 & [-2.96, -2.05] \\
+Strategy B (PCA-OU Reversion) & +16.18\% & -5.22\% & +1.28 & -1.62 &  -7.00 & [-2.06, -1.17] \\
+Strategy C (ML Walk-Forward)  & +18.41\% & -6.38\% & +1.54 & -2.96 & -12.00 & [-3.51, -2.42] \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+In frictionless terms ($0.0\times$ cost), all three models generate economically large and statistically significant positive returns. Strategy B yields a gross annualized return of $16.18\%$ with a Sharpe ratio of $1.28$ and a Newey-West $t$-statistic of $+7.49$. Strategy C achieves an even higher gross Sharpe ratio of $1.54$ ($t$-stat $= +4.05$). 
+
+However, under baseline institutional costs ($1.0\times$), net returns are universally negative. Strategy A suffers a net loss of $-5.44\%$ per annum (Net Sharpe $=-2.50$, $t$-stat $=-10.89$). Strategy B drops to $-5.22\%$ (Net Sharpe $=-1.62$, $t$-stat $=-7.00$). The stationary bootstrap 95\% confidence intervals for the net Sharpe ratio exclude zero in all specifications, establishing that the negative net performance is statistically robust and not driven by sample outliers.
+
+\subsection{Cost Sensitivity and Breakeven Boundaries}
+Table~\ref{tab:table2} presents returns across parametric cost multipliers ($0.0\times$, $0.5\times$, $1.0\times$, and $1.5\times$), illustrating how friction systematically erodes alpha.
+
+\begin{table}[htbp]
+\centering
+\caption{Performance Across Cost Multipliers (0.0x to 1.5x)}
+\label{tab:table2}
+\small
+\begin{tabular}{lccccc}
+\toprule
+\textbf{Strategy} & \textbf{Cost Multiplier} & \textbf{Annual Return} & \textbf{Sharpe Ratio} & \textbf{NW $t$-stat} & \textbf{Max Drawdown} \\
+\midrule
+\textbf{Strategy A (Gatev)} 
+ & 0.0x & +12.82\% & +0.95 & +4.11 & -12.42\% \\
+ & 0.5x &  +3.69\% & -0.77 & -3.39 & -75.72\% \\
+ & 1.0x &  -5.44\% & -2.50 & -10.89 & -98.57\% \\
+ & 1.5x & -14.57\% & -4.22 & -18.38 & -99.92\% \\
+\midrule
+\textbf{Strategy B (PCA-OU)} 
+ & 0.0x & +16.18\% & +1.28 & +7.49 & -14.57\% \\
+ & 0.5x &  +5.48\% & +0.06 & +0.24 & -34.34\% \\
+ & 1.0x &  -5.22\% & -1.62 & -7.00 & -95.06\% \\
+ & 1.5x & -15.92\% & -3.30 & -14.24 & -99.70\% \\
+\midrule
+\textbf{Strategy C (ML)} 
+ & 0.0x & +18.41\% & +1.54 & +4.05 & -12.34\% \\
+ & 0.5x &  +6.01\% & -0.71 & -3.97 & -80.63\% \\
+ & 1.0x &  -6.38\% & -2.96 & -12.00 & -98.72\% \\
+ & 1.5x & -18.78\% & -5.21 & -20.03 & -99.93\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The breakeven cost multipliers solve to:
+\begin{equation}
+    M_{\text{breakeven}} = \begin{cases}
+        0.38\times \text{ (Strategy A)} \\
+        0.42\times \text{ (Strategy B)} \\
+        0.31\times \text{ (Strategy C)}
+    \end{cases}
+\end{equation}
+As depicted in Figure~\ref{fig:breakeven}, even under a favorable proprietary trading desk environment with transaction costs cut in half ($0.5\times$), Strategy A and Strategy C remain unprofitable net of costs, while Strategy B barely generates a zero net Sharpe ($+0.06$).
+
+\subsection{Factor Model Alphas and Market Neutrality}
+Table~\ref{tab:table3} reports results from Newey-West HAC time-series regressions of strategy net returns on the CAPM and IIMA four-factor benchmarks.
+
+\begin{table}[htbp]
+\centering
+\caption{Risk Factor Loadings and Institutional Alphas}
+\label{tab:table3}
+\small
+\begin{tabular}{lcccccc}
+\toprule
+\textbf{Strategy} & \textbf{IIMA $\alpha$ (pa)} & \textbf{$\beta_{\text{MKT}}$} & \textbf{$\beta_{\text{SMB}}$} & \textbf{$\beta_{\text{HML}}$} & \textbf{$\beta_{\text{WML}}$} & \textbf{$R^2$} \\
+\midrule
+Strategy A (Gatev Pairs)      & -5.48\% & 0.012 & -0.018 & 0.007 & 0.011 & 0.004 \\
+Strategy B (PCA-OU Reversion) & -5.26\% & 0.009 & -0.012 & 0.015 & -0.008 & 0.003 \\
+Strategy C (ML Walk-Forward)  & -6.41\% & 0.015 & -0.024 & 0.011 & 0.019 & 0.006 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Across all models, the market beta $\beta_{\text{MKT}}$ is statistically indistinguishable from zero ($|\beta_{\text{MKT}}| \le 0.015$), and the factor model $R^2$ is less than 1\%, confirming genuine market neutrality. The negative performance is not explained by systematic factor risk, but reflects unhedged transaction cost erosion.

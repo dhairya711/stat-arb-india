@@ -1,0 +1,4 @@
+Strategy,Gross Return (% p.a.),Net Return 0.5x (% p.a.),Net Return 1.0x (% p.a.),Net Return 1.5x (% p.a.),Breakeven Cost Multiplier,Breakeven Round-trip Cost (bps)
+Strategy_A_Main,9.50%,-7.83%,-25.16%,-42.49%,0.48x,7.9 bps
+Strategy_B_Main,17.91%,0.58%,-16.75%,-34.08%,0.90x,14.9 bps
+Strategy_C_Ridge_Main,8.75%,-8.58%,-25.91%,-43.25%,0.44x,7.3 bps

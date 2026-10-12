@@ -1,0 +1,4 @@
+Strategy,Gross Return (% p.a.),Gross Sharpe,Gross t-stat,Net Return (% p.a.),Net Sharpe,Net t-stat,Max Drawdown,Bootstrap 95% CI (Sharpe)
+Strategy_A_Main,9.50%,0.95,4.11,-25.16%,-2.52,-10.89,-98.57%,"[-2.96, -2.05]"
+Strategy_B_Main,17.91%,1.74,7.49,-16.75%,-1.63,-7.00,-95.06%,"[-2.06, -1.17]"
+Strategy_C_Ridge_Main,8.75%,1.00,4.05,-25.91%,-2.96,-12.00,-98.72%,"[-3.51, -2.42]"

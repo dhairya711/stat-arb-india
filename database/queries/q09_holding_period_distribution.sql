@@ -1,4 +1,4 @@
-﻿-- q09_holding_period_distribution.sql
+-- q09_holding_period_distribution.sql
 -- Distribution of trade holding periods: quartiles and outliers
 SELECT
     strategy,

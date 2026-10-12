@@ -1,4 +1,4 @@
-﻿-- q05_drawdown_periods.sql
+-- q05_drawdown_periods.sql
 -- Identify drawdown periods: start, end, depth, recovery date
 WITH cum_returns AS (
     SELECT
@@ -7,7 +7,7 @@ WITH cum_returns AS (
             PARTITION BY strategy, trial_id ORDER BY return_date
         )) - 1                                    AS cum_return
     FROM strategy_returns
-    WHERE cost_multiplier = 1.0 AND trial_id LIKE '%_main'
+    WHERE cost_multiplier = 1.0 AND trial_id ILIKE '%main%'
 ),
 running_max AS (
     SELECT *,
@@ -20,13 +20,17 @@ dd AS (
     SELECT *,
         (cum_return - peak) / (1 + peak)          AS drawdown
     FROM running_max
+),
+ranked_dd AS (
+    SELECT *,
+        ROW_NUMBER() OVER (PARTITION BY strategy ORDER BY drawdown ASC, return_date ASC) as rn
+    FROM dd
 )
 SELECT
     strategy,
-    MIN(return_date) FILTER (WHERE drawdown = MIN(drawdown) OVER
-        (PARTITION BY strategy))                  AS trough_date,
-    ROUND(MIN(drawdown), 4)                       AS max_drawdown,
-    ROUND(MIN(drawdown) * 100, 2)                 AS max_drawdown_pct
-FROM dd
-GROUP BY strategy
+    return_date                                   AS trough_date,
+    ROUND(drawdown, 4)                            AS max_drawdown,
+    ROUND(drawdown * 100, 2)                      AS max_drawdown_pct
+FROM ranked_dd
+WHERE rn = 1
 ORDER BY strategy;

@@ -1,0 +1,46 @@
+﻿\section{Methodology and Quantitative Models}
+\label{sec:methodology}
+
+We implement three methodological families representing the historical evolution of statistical arbitrage from non-parametric distance pairs to statistical factor residuals and machine learning.
+
+\subsection{Strategy A: Distance Pairs (Gatev et al. 2006)}
+Following \citet{gatev2006pairs}, the formation period spans 252 trading days. For each stock pair $(i, j)$ in the F\&O universe, we compute the sum of squared differences (SSD) on normalized cumulative total return series:
+\begin{equation}
+    \text{SSD}_{i,j} = \sum_{t=1}^{252} \left( \tilde{P}_{i,t} - \tilde{P}_{j,t} \right)^2, \quad \text{where } \tilde{P}_{i,t} = \prod_{\tau=1}^t (1 + R_{i,\tau})
+\end{equation}
+The top 20 pairs with the lowest SSD are selected for a subsequent 126-day trading window.
+\begin{itemize}
+    \item \textbf{Trading Rule:} A pair is opened when the normalized price spread diverges by $\ge 2.0\sigma$ (standard deviation of spread during formation). The position is closed when the spread reverts to zero, or upon reaching the 126-day holding limit, or if spread divergence exceeds $4.0\sigma$ (stop-loss).
+    \item \textbf{Execution Lag:} A strict 1-day wait is enforced between signal identification (day $t$) and trade execution (day $t+1$) to eliminate bid-ask bounce and contemporaneous execution bias.
+    \item \textbf{Capital Allocation:} Committed capital methodology is applied, allocating $1/N$ of total strategy equity to each of the $N=20$ pairs.
+\end{itemize}
+
+\subsection{Strategy B: PCA-Residual Mean Reversion (Avellaneda \& Lee 2010)}
+\citet{avellaneda2010statistical} generalize pairs trading into multi-factor residual space. On each trading day, we compute the empirical correlation matrix of daily returns over a rolling 252-day window and extract the top $k=5$ principal components as statistical factors $F_k(t)$.
+Stock returns are regressed cross-sectionally on the factor returns:
+\begin{equation}
+    R_{i,t} = \beta_{i,0} + \sum_{m=1}^k \beta_{i,m} F_{m,t} + \epsilon_{i,t}
+\end{equation}
+The cumulative residuals $X_{i,t} = \sum_{\tau=1}^t \epsilon_{i,\tau}$ are modeled as an Ornstein-Uhlenbeck (OU) process:
+\begin{equation}
+    dX_{i,t} = \kappa_i (\theta_i - X_{i,t}) dt + \sigma_i dW_{i,t}
+\end{equation}
+Parameters are estimated via rolling 60-day AR(1) regressions. The dimensionless $s$-score is defined as:
+\begin{equation}
+    s_{i,t} = \frac{X_{i,t} - \theta_i}{\sigma_{\text{eq},i}}, \quad \text{where } \sigma_{\text{eq},i} = \frac{\sigma_i}{\sqrt{2\kappa_i}}
+\end{equation}
+Positions are opened when $|s_{i,t}| > 1.25$ and closed when $|s_{i,t}| < 0.50$ (or stopped at $|s_{i,t}| > 3.00$). The portfolio is maintained in dollar neutrality with a maximum individual weight constraint of 10\%.
+
+\subsection{Strategy C: ML-Enhanced Walk-Forward Residuals}
+As an out-of-sample echo of \citet{guijarro2021deep}, we train machine learning models to predict the 5-day forward residual mean-reversion direction.
+\begin{itemize}
+    \item \textbf{Validation Protocol:} Expanding-window walk-forward validation (initial training 2010--2015, out-of-sample evaluation 2016--2025).
+    \item \textbf{Embargo Purging:} A strict 10-day embargo gap is inserted between training and test folds to prevent autoregressive feature leakage \citep{bailey2014deflated}.
+    \item \textbf{Model Specifications:} Ridge regression ($L_2$ penalty $\alpha=1.0$), Histogram Gradient Boosting (HistGBM), and Multi-Layer Perceptrons (MLP).
+    \item \textbf{Portfolio Formation:} Stocks are ranked daily by predicted residual reversion; the portfolio goes long the top quintile (Q5) and short the bottom quintile (Q1) with dollar neutrality.
+\end{itemize}
+
+\subsection{Statistical Inference and Multiple Testing Guardrails}
+All return series are evaluated using \citet{newey1987simple} HAC $t$-statistics with Bartlett kernel bandwidth $L = 4(T/100)^{2/9}$. Non-parametric 95\% confidence intervals are estimated via the \citet{politis1994stationary} stationary block bootstrap (1,000 resamples, expected block length 21 days).
+
+To control for data-snooping across our 12 pre-registered model variations, we compute the Deflated Sharpe Ratio (DSR) of \citet{bailey2014deflated} and apply \citet{benjamini1995controlling} False Discovery Rate (FDR) adjustments.

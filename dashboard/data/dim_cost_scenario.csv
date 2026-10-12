@@ -1,0 +1,5 @@
+cost_multiplier,scenario_name,description
+0.0,Gross Return (Zero Friction),Theoretical frictionless benchmark
+0.5,Low Friction (0.5x Baseline),Proprietary desk / ultra-low execution cost
+1.0,Institutional Baseline (1.0x),"Full statutory STT, stamp duty, NSE fees, GST, 5bps slippage"
+1.5,High Friction Stress (1.5x),"Adverse execution, retail brokerage, widened bid-ask"

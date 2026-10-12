@@ -1,4 +1,4 @@
-﻿-- q03_universe_turnover_yoy.sql
+-- q03_universe_turnover_yoy.sql
 -- F&O universe: stocks entering and exiting each year
 WITH prev_year AS (
     SELECT symbol,

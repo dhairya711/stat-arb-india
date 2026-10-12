@@ -1,0 +1,13 @@
+Strategy,Cost Multiplier,Annualized Return,Annualized Volatility,Sharpe Ratio,Newey-West t-stat,Max Drawdown
+Strategy_A_Main,0.0x,9.50%,10.00%,0.95,4.11,-12.42%
+Strategy_A_Main,0.5x,-7.83%,10.00%,-0.78,-3.39,-75.72%
+Strategy_A_Main,1.0x,-25.16%,10.00%,-2.52,-10.89,-98.57%
+Strategy_A_Main,1.5x,-42.49%,10.00%,-4.25,-18.38,-99.92%
+Strategy_B_Main,0.0x,17.91%,10.31%,1.74,7.49,-14.57%
+Strategy_B_Main,0.5x,0.58%,10.31%,0.06,0.24,-34.34%
+Strategy_B_Main,1.0x,-16.75%,10.31%,-1.63,-7.00,-95.06%
+Strategy_B_Main,1.5x,-34.08%,10.31%,-3.31,-14.24,-99.70%
+Strategy_C_Ridge_Main,0.0x,8.75%,8.76%,1.00,4.05,-12.34%
+Strategy_C_Ridge_Main,0.5x,-8.58%,8.76%,-0.98,-3.97,-80.63%
+Strategy_C_Ridge_Main,1.0x,-25.91%,8.76%,-2.96,-12.00,-98.72%
+Strategy_C_Ridge_Main,1.5x,-43.25%,8.76%,-4.94,-20.03,-99.93%

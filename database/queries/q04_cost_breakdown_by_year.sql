@@ -1,4 +1,4 @@
-﻿-- q04_cost_breakdown_by_year.sql
+-- q04_cost_breakdown_by_year.sql
 -- Average round-trip cost breakdown by year and cost component
 SELECT
     YEAR(close_date)                              AS year,

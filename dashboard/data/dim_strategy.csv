@@ -1,0 +1,4 @@
+strategy_key,strategy_name,strategy_family,methodology,paper_citation,target_holding_days,lookback_days
+Strategy_A_Main,Distance Pairs (Gatev et al. 2006),Distance Metric Pairs,"Top 20 Normalized SSD Pairs, 252d Formation, 2.0 Sigma Entry","Gatev, Goetzmann, Rouwenhorst (2006, RFS)",126,252
+Strategy_B_Main,PCA-Residual Mean Reversion (Avellaneda-Lee 2010),Statistical Factor Residuals,"Rolling 252d PCA (k=5), OU Process AR(1), Rolling 60d s-score","Avellaneda & Lee (2010, Quantitative Finance)",30,252
+Strategy_C_Ridge_Main,ML-Enhanced Residual Reversion (Guijarro-Ordonez echo),Machine Learning Residuals,"Expanding-Window Walk-Forward Ridge (10d Embargo), Quintile L/S","Guijarro-Ordonez, Pelger, Zanotti (2021, arXiv:2106.04028 echo)",21,252

@@ -1,4 +1,4 @@
-﻿-- q07_crash_episode_returns.sql
+-- q07_crash_episode_returns.sql
 -- Returns during pre-registered crash/regime episodes
 WITH episodes AS (
     SELECT 'COVID_crash' AS episode, DATE '2020-02-19' AS start_date, DATE '2020-03-31' AS end_date
@@ -19,6 +19,6 @@ SELECT
 FROM episodes e
 JOIN strategy_returns r
     ON r.return_date BETWEEN e.start_date AND e.end_date
-WHERE r.cost_multiplier = 1.0 AND r.trial_id LIKE '%_main'
+WHERE r.cost_multiplier = 1.0 AND r.trial_id ILIKE '%main%'
 GROUP BY e.episode, r.strategy
 ORDER BY e.episode, r.strategy;
