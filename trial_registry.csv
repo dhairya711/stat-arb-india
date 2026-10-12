@@ -1,0 +1,1 @@
+﻿trial_id,date_run,strategy,variant_id,description,formation_days,trading_days,top_n,pca_k,entry_thresh,cost_multiplier,exclude_covid,liquid_only,target_horizon,model_type,gross_sharpe,net_sharpe,gross_return_pa,net_return_pa,nw_tstat,dsr,notes

@@ -1,0 +1,158 @@
+﻿# Alpha Hunt India — Project Configuration
+# ALL parameters live here. Nothing is hard-coded in any script.
+# Edit this file to run any variant. Do not change values after pre-registration without
+# adding a dated entry to PREREG.md Deviations section.
+
+project:
+  name: "Alpha Hunt India"
+  title: "Does Statistical Arbitrage Survive in Indian F&O Stocks? 2010-2025"
+  version: "1.0.0"
+  seed: 42
+
+# ─── SAMPLE PERIOD ───────────────────────────────────────────────────────────
+dates:
+  sample_start: "2010-01-01"
+  sample_end:   "2025-12-31"
+  warmup_start: "2009-01-01"   # used only inside formation windows; not analysed
+
+sub_periods:
+  sp1: ["2010-01-01", "2014-12-31"]
+  sp2: ["2015-01-01", "2019-12-31"]
+  sp3: ["2020-01-01", "2025-12-31"]
+
+crash_episodes:
+  covid:         ["2020-02-19", "2020-03-31"]
+  demonetisation:["2016-11-08", "2016-12-31"]
+  selloff_2022:  ["2022-01-01", "2022-06-30"]
+  post_sebi_2024:["2024-10-01", "2025-12-31"]
+
+# ─── UNIVERSE RULES ──────────────────────────────────────────────────────────
+universe:
+  min_ssf_days_per_month: 15        # SSF must trade ≥ 15 days in month M
+  min_adtv_cr: 10                   # minimum avg daily traded value (INR crore)
+  max_missing_days: 10              # in 252-day formation window
+  min_price_inr: 10                 # minimum stock price in formation window
+
+# ─── STRATEGY A: GATEV DISTANCE PAIRS ────────────────────────────────────────
+strategy_a:
+  formation_days: 252
+  trading_days: 126
+  top_n_primary: 20
+  top_n_secondary: 5
+  entry_sigma: 2.0
+  exit_threshold: 0.0               # spread crosses zero
+  capital_method: "committed"       # primary; also computed: "fully_invested"
+  cohort_frequency: "monthly"
+  allow_reopen: true
+  sector_restrict: false            # main spec; true = robustness R3
+  one_day_wait: false               # main spec; true = robustness R2
+  price_series: "total_return"
+
+# ─── STRATEGY B: PCA + ORNSTEIN-UHLENBECK ────────────────────────────────────
+strategy_b:
+  pca_window: 252
+  pca_factors_k: 5                  # main spec; 3 = R4; 8 = R5
+  ou_window: 60
+  s_open_long:  -1.25
+  s_open_short:  1.25
+  s_close_long:  -0.5
+  s_close_short:  0.75
+  kappa_min: 0.003968               # 1/252 annualised; half-life < 252 days
+  dollar_neutral: true
+  max_weight_per_stock: 0.10
+
+# ─── STRATEGY C: ML-ENHANCED RESIDUAL REVERSION ──────────────────────────────
+strategy_c:
+  target_horizon: 5                 # days forward; 1 = robustness R11
+  features:
+    - residual_return_lag_1
+    - residual_return_lag_5
+    - residual_return_lag_10
+    - residual_return_lag_20
+    - residual_return_lag_60
+    - s_score
+    - residual_vol_22d
+    - volume_change_5d
+    - turnover_ratio_22d
+    - return_rank_cross_sectional
+  normalisation: "expanding_window_zscore"
+  no_lookahead: true
+
+  models:
+    ridge:
+      alpha_grid: [0.01, 0.1, 1.0, 10.0, 100.0]
+    gradient_boost:
+      n_estimators_grid: [100, 300]
+      max_depth_grid: [3, 5]
+      learning_rate_grid: [0.05, 0.1]
+    mlp:
+      hidden_layers_grid: [[64, 32], [128, 64, 32]]
+      dropout: 0.2
+    cnn_lstm:
+      enabled: false
+
+  walk_forward:
+    initial_train_end: "2015-12-31"
+    oos_start: "2016-01-01"
+    retrain_months: 12
+    embargo_days: 10
+    validation_years: 1
+
+  portfolio:
+    quintile_long: "top"
+    quintile_short: "bottom"
+    dollar_neutral: true
+    no_trade_buffer: 0.005
+    max_weight_per_stock: 0.05
+
+# ─── COST MODEL ──────────────────────────────────────────────────────────────
+costs:
+  stt:
+    # STT on futures sell side — VERIFIED from Union Budget 2024-25
+    before_2024_10_01: 0.000125      # 0.0125%
+    from_2024_10_01:   0.000200      # 0.0200%
+
+  nse_charges:
+    # Exchange transaction charges per INR 1 lakh traded value
+    # Oct 2024 onwards: VERIFIED. Pre-Oct 2024: UNVERIFIED exact — confirm from NSE
+    from_2024_10_01_per_lakh: 1.73
+    before_2024_10_01_per_lakh: 1.90   # UNVERIFIED — placeholder
+
+  sebi_turnover_fee: 0.000001        # 0.0001% — UNVERIFIED, to verify at sebi.gov.in
+  stamp_duty: 0.00002                # 0.002% buyer side — UNVERIFIED, state-dependent
+  gst_rate: 0.18                     # 18% on brokerage + exchange charges
+
+  brokerage_per_order_inr: 20        # discount broker flat fee; parameterised
+
+  slippage_bps:
+    tier1_adtv_cr_min: 100
+    tier1_bps: 2                     # per side
+    tier2_adtv_cr_min: 20
+    tier2_bps: 5
+    tier3_bps: 10
+
+  roll:
+    days_before_expiry: 5
+    roll_cost_bps: 5                 # round-trip; to be updated with actual basis data
+
+  margin_pct: 0.15                   # SPAN + exposure margin (15% of notional)
+
+  scenario_multipliers: [0.0, 0.5, 1.0, 1.5]
+
+# ─── STATISTICS ──────────────────────────────────────────────────────────────
+stats:
+  newey_west_lag_rule: "andrews"     # lag = floor(4*(T/100)^(2/9))
+  bootstrap_replications: 1000
+  bootstrap_mean_block_months: 5
+  factor_model: "iima_4factor"       # MKT, SMB, HML, WML
+  significance_level: 0.05
+
+# ─── PATHS ───────────────────────────────────────────────────────────────────
+paths:
+  data_raw: "data/raw"
+  data_processed: "data/processed"
+  results_tables: "results/tables"
+  results_figures: "results/figures"
+  database: "database/alpha_hunt.db"
+  trial_registry: "trial_registry.csv"
+  paper_output: "paper/Alpha_Hunt_India.pdf"
