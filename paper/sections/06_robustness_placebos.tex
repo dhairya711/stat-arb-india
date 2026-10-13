@@ -21,7 +21,7 @@ Table~\ref{tab:table7} presents the complete summary of all 12 pre-registered mo
 \centering
 \caption{Pre-Registered Trial Registry and Multiple-Testing Adjustments}
 \label{tab:table7}
-\small
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{llcccc}
 \toprule
 \textbf{Trial ID} & \textbf{Specification Description} & \textbf{Gross Sharpe} & \textbf{Net Sharpe} & \textbf{DSR} & \textbf{BH FDR Sig} \\
@@ -41,7 +41,8 @@ Strategy\_C\_R7\_GBM          & ML HistGBM Non-Linear Trees        & +1.48 & -3.
 Strategy\_C\_R8\_MLP          & ML Neural Network (MLP)            & +1.39 & -3.65 & 0.000 & No \\
 Strategy\_C\_R11\_1Day        & ML 1-Day Rapid Rebalance           & +1.61 & -4.88 & 0.000 & No \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \end{table}
 
 Following the multiple-testing recommendations of \citet{harvey2016and} and \citet{hou2020replicating}, we compute the Deflated Sharpe Ratio (DSR) of \citet{bailey2014deflated} accounting for the number of tested trials ($N=12$), the negative skewness of net returns, and return variance; the DSR for net returns across all 12 variations is $0.000$. Controlling the False Discovery Rate at $\alpha=0.05$ via \citet{benjamini1995controlling}, zero out of twelve specifications survive. This rigorous non-significance proves that the failure of statistical arbitrage to survive net of costs is structural across all parameter spaces.

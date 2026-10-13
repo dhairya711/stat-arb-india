@@ -8,7 +8,7 @@ Table~\ref{tab:table1} reports the full-sample annualized performance metrics fo
 \centering
 \caption{Full-Sample Annualized Strategy Performance (2010--2025)}
 \label{tab:table1}
-\small
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{lcccccc}
 \toprule
 \textbf{Strategy} & \textbf{Gross Return} & \textbf{Net Return} & \textbf{Gross Sharpe} & \textbf{Net Sharpe} & \textbf{Net NW $t$-stat} & \textbf{Bootstrap 95\% CI (Sharpe)} \\
@@ -17,7 +17,8 @@ Strategy A (Gatev Pairs)      & +9.50\%  & -25.16\% & +0.95 & -2.52 & -10.89 & [
 Strategy B (PCA-OU Reversion) & +17.91\% & -16.75\% & +1.74 & -1.63 &  -7.00 & [-2.06, -1.17] \\
 Strategy C (ML Walk-Forward)  & +8.75\%  & -25.91\% & +1.00 & -2.96 & -12.00 & [-3.51, -2.42] \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \end{table}
 
 In frictionless terms ($0.0\times$ cost multiplier), all three quantitative frameworks generate economically substantial and statistically robust profits. Strategy B (PCA-OU mean-reversion) delivers a gross annualized return of $+17.91\%$ with a Sharpe ratio of $+1.74$ and a Newey--West $t$-statistic of $+7.49$ ($p < 10^{-12}$). Strategy A (classical distance pairs) yields $+9.50\%$ gross annualized return with a Sharpe ratio of $+0.95$ ($t\text{-stat} = +4.11$, $p < 0.001$). Strategy C (walk-forward machine learning) achieves $+8.75\%$ gross return with a Sharpe ratio of $+1.00$ ($t\text{-stat} = +4.05$, $p < 0.001$).
@@ -63,7 +64,7 @@ To evaluate whether strategy failure is driven by specific macroeconomic shocks 
 \centering
 \caption{Sub-Period and Macro Crisis Performance Breakdown (Net Returns)}
 \label{tab:table4}
-\small
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{lcccccc}
 \toprule
 \textbf{Regime / Crisis Window} & \textbf{Days} & \textbf{Strategy} & \textbf{Net Return} & \textbf{Net Vol} & \textbf{Net Sharpe} & \textbf{Max DD} \\
@@ -92,7 +93,8 @@ To evaluate whether strategy failure is driven by specific macroeconomic shocks 
                                              & 327 & Strategy B & -21.40\% & 10.42\% & -2.05 & -31.47\% \\
                                              & 327 & Strategy C & -23.00\% & 10.96\% & -2.10 & -31.23\% \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \end{table}
 
 Key insights emerge from the sub-period decomposition:
@@ -166,7 +168,7 @@ To verify that the empirical returns represent genuine market-neutral idiosyncra
 \centering
 \caption{Risk Factor Loadings and Institutional Alphas}
 \label{tab:table3}
-\small
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{lcccccc}
 \toprule
 \textbf{Strategy} & \textbf{IIMA $\alpha$ (pa)} & \textbf{$\beta_{\text{MKT}}$} & \textbf{$\beta_{\text{SMB}}$} & \textbf{$\beta_{\text{HML}}$} & \textbf{$\beta_{\text{WML}}$} & \textbf{$R^2$} \\
@@ -175,7 +177,8 @@ Strategy A (Gatev Pairs)      & -31.78\% & 0.01  & -0.01 &  0.01 &  0.01 & 0.000
 Strategy B (PCA-OU Reversion) & -23.18\% & 0.01  &  0.04 & -0.04 & -0.01 & 0.003 \\
 Strategy C (ML Walk-Forward)  & -32.46\% & -0.00 &  0.01 & -0.02 &  0.01 & 0.001 \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \end{table}
 
 Across all three frameworks, the market beta $\beta_{\text{MKT}}$ is statistically zero ($|\beta_{\text{MKT}}| \le 0.01$), and factor model $R^2$ values remain below 0.3\%. The strategies exhibit negligible loading on Size (SMB), Value (HML), and Momentum (WML). This demonstrates that the negative net returns are not caused by directional market drops or factor tilts, but represent pure transaction friction drag superimposed on a market-neutral baseline.
