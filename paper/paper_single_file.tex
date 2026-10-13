@@ -6,7 +6,7 @@
 \usepackage{natbib}
 \usepackage{hyperref}
 \usepackage{caption}
-% \usepackage{microtype} % Disabled to prevent Overleaf free-tier compile timeout
+% \usepackage{microtype} % Disabled to ensure rapid compilation on Overleaf free tier
 \usepackage{textcomp}
 
 \hypersetup{
@@ -16,8 +16,8 @@
     urlcolor=blue
 }
 
-\title{\textbf{Does Statistical Arbitrage Survive in Indian F\&O Stocks?}\\
-\large Distance Pairs (Gatev et al.\ 2006), PCA-Residual Mean Reversion (Avellaneda--Lee 2010), and ML-Enhanced Residual Reversion, 2010--2025}
+\title{\textbf{Does Statistical Arbitrage Survive in Indian Equity Derivatives?}\\
+\large Long-Horizon Evidence from Distance Pairs, PCA Factor Residuals, and Walk-Forward Machine Learning (2010--2025)}
 
 \author{
     \textbf{Dhairya Dani} \\
@@ -32,7 +32,7 @@
 \maketitle
 
 \begin{abstract}
-We conduct an extensive, pre-registered out-of-sample investigation into whether statistical arbitrage strategies survive in the National Stock Exchange of India (NSE) single-stock Futures \& Options (F\&O) universe over the 16-year period from 2010 through 2025. Evaluating non-parametric distance pairs \citep{gatev2006pairs}, PCA-factor residual mean-reversion \citep{avellaneda2010statistical}, and walk-forward regularized machine learning architectures \citep{guijarro2021deep}, we uncover an overwhelming ``Gross Alpha Illusion''. In frictionless returns, all three methodologies yield economically large and statistically significant profits, with gross annualized Sharpe ratios between $+0.95$ and $+1.74$ (Newey--West $t$-statistics from $+4.05$ to $+7.49$). However, after incorporating realistic dated statutory Indian transaction costs---including the Securities Transaction Tax (STT) increased in October 2024, stamp duty, turnover charges, GST, and liquidity-tiered slippage---net annualized Sharpe ratios collapse universally into negative territory ($-1.63$ to $-2.96$), resulting in annual capital depletion of $-16.7\%$ to $-25.9\%$. The average breakeven cost multiplier is $0.38\times$ of baseline institutional costs. Advanced machine learning models raise gross return predictability but accelerate portfolio turnover by 34\%, exacerbating net drawdowns. All 12 pre-registered robustness variations fail the Deflated Sharpe Ratio ($\text{DSR} = 0.000$) and False Discovery Rate adjustments. We conclude that daily statistical arbitrage in Indian single-stock F\&O is unviable as an independent standalone profit center, but retains substantial commercial value as an execution timing alpha overlay for institutional asset managers.
+We examine whether statistical arbitrage strategies generate viable net excess returns in the National Stock Exchange of India (NSE) single-stock Futures \& Options (F\&O) market over a 16-year window from 2010 to 2025. Across three established quantitative methodologies---non-parametric distance pairs \citep{gatev2006pairs}, PCA-based residual mean-reversion \citep{avellaneda2010statistical}, and regularized walk-forward machine learning \citep{guijarro2021deep}---we identify a stark divergence between gross predictability and net execution performance. In theoretical, frictionless conditions, all three strategies yield positive, statistically significant gross returns, achieving gross annualized Sharpe ratios between $+0.95$ and $+1.74$ with Newey--West $t$-statistics from $+4.05$ to $+7.49$. Once actual dated statutory transaction costs (Securities Transaction Tax, stamp duty, exchange levies, GST) and realistic liquidity-tiered bid-ask slippage are subtracted, net performance turns negative across all specifications. Net annualized Sharpe ratios drop to between $-1.63$ and $-2.96$, corresponding to annual net portfolio losses of $-16.7\%$ to $-25.9\%$. The estimated breakeven transaction friction is $0.38\times$ baseline institutional costs. Machine learning models succeed in capturing shorter-lived mean-reversion signals but trigger a 34\% increase in rebalancing turnover, aggravating drag from trading friction. Across 12 pre-registered model variations, none achieve positive net significance after accounting for multiple testing and the Deflated Sharpe Ratio ($\text{DSR} = 0.000$). Our empirical findings indicate that standalone daily statistical arbitrage cannot overcome statutory frictions in Indian single-stock derivatives, though the underlying price-displacement signals provide actionable utility as execution-timing overlays for institutional rebalancing.
 \end{abstract}
 
 \vspace{1em}
@@ -48,47 +48,47 @@ We conduct an extensive, pre-registered out-of-sample investigation into whether
 \section{Introduction}
 \label{sec:intro}
 
-Statistical arbitrage has stood as one of the cornerstone quantitative investment strategies in empirical finance for more than three decades. Originating in Wall Street proprietary trading desks during the mid-1980s, the core economic hypothesis posits that assets sharing common fundamental, statistical, or factor-driven risks should display cointegrated or mean-reverting price trajectories \citep{gatev2006pairs,vidyamurthy2004pairs}. When temporary idiosyncratic supply-demand imbalances or liquidity shocks drive prices apart, statistical arbitrageurs inject liquidity into divergent assets by buying undervalued securities and shorting overvalued counterparts, expecting price convergence to generate risk-adjusted returns \citep{huck2015pairs,avellaneda2010statistical,krauss2017statistical,gu2020empirical,guijarro2021deep}.
+Quantitative relative-value trading has long occupied a prominent position in empirical finance. The fundamental premise of statistical arbitrage rests on law-of-one-price dynamics: securities tied to shared fundamental, statistical, or factor risk profiles should exhibit co-moving, mean-reverting price spreads over intermediate horizons \citep{gatev2006pairs,vidyamurthy2004pairs}. When temporary supply imbalances, institutional flow pressures, or inventory dislocations push these spreads away from equilibrium, quantitative managers step in as liquidity providers, buying underpriced assets and shorting overpriced counterparts in anticipation of convergence \citep{avellaneda2010statistical,krauss2017statistical,gu2020empirical}.
 
-However, modern empirical finance has increasingly demonstrated that anomalies documented in frictionless backtests often deteriorate drastically out-of-sample \citep{mclean2016does,hou2020replicating}. In the specific domain of pairs trading, \citet{do2010does} and \citet{do2012are} discovered that post-2002 US pairs trading profits declined steadily, with trading friction and short-selling borrowing constraints consuming the majority of remaining gains. As \citet{novymarx2016taxonomy} and \citet{frazzini2018trading} have shown across broader asset pricing anomalies, strategies characterized by high portfolio turnover are acutely susceptible to transaction cost erosion.
+Over the past two decades, however, empirical asset pricing has revealed that anomalies identified in frictionless simulations frequently decay or disappear out of sample \citep{mclean2016does,hou2020replicating}. In pairs trading specifically, \citet{do2010does} and \citet{do2012are} documented a steady downward trend in US profitability after 2002, with short-sale borrowing fees and execution friction capturing the majority of theoretical gains. More broadly, \citet{novymarx2016taxonomy} and \citet{frazzini2018trading} demonstrated that high-turnover anomaly strategies face severe decay once practical market microstructure constraints are accounted for.
 
-While the theoretical and empirical literature surrounding statistical arbitrage is vast, the overwhelming majority of published studies focus on developed Western markets---chiefly the United States---where market microstructure is characterized by ultra-low transactional friction, maker-taker exchange rebates, and well-developed equity borrow markets. Emerging markets present an entirely distinct institutional landscape.
+The vast majority of existing statistical arbitrage literature examines developed equity venues, most notably the United States. In those markets, trading friction is minimal, maker-taker rebates are common, and borrow markets are deep. Emerging equity derivative venues, by contrast, present a different institutional profile.
 
-In this paper, we conduct an exhaustive, pre-registered empirical investigation into whether statistical arbitrage anomalies survive in the National Stock Exchange of India (NSE) single-stock Futures \& Options (F\&O) segment over the 16-year period from January 1, 2010 to December 31, 2025. The Indian equity derivatives market serves as a critical empirical laboratory for two institutional reasons:
+This paper provides an empirical evaluation of statistical arbitrage in the National Stock Exchange of India (NSE) single-stock Futures \& Options (F\&O) market over the 16-year period from January 2010 through December 2025. Two specific institutional features make the Indian derivative landscape particularly informative for studying implementation friction:
 \begin{enumerate}
-    \item It represents one of the largest and most active derivative venues globally by contract volume, yet single-stock short selling in the cash equity segment is severely constrained by illiquid Securities Lending and Borrowing (SLB) mechanisms, forcing market-neutral managers to operate almost exclusively in single-stock futures contracts.
-    \item Unlike US equities, Indian derivative transactions are subject to non-negotiable statutory government taxes, including the Securities Transaction Tax (STT) \citep{bose2007securities}, Stamp Duty, Goods and Services Tax (GST), exchange turnover levies, and SEBI regulatory charges.
+    \item Cash equity short selling in India is constrained by a thin Securities Lending and Borrowing (SLB) framework. As a practical consequence, quantitative fund managers seeking two-sided market neutrality execute short exposure primarily through single-stock futures contracts.
+    \item Unlike US venues where transaction fees are predominantly negotiated, Indian derivative transactions bear mandatory statutory taxes and levies, including the Securities Transaction Tax (STT) \citep{bose2007securities}, state stamp duty, GST, exchange charges, and regulatory turnover fees.
 \end{enumerate}
 
-\subsection{Key Empirical Findings and the ``Gross Alpha Illusion''}
-Our central finding is striking: \textbf{Gross statistical arbitrage signals exist in Indian F\&O equities with high statistical significance, but they are completely annihilated by market microstructure friction.}
+\subsection{Empirical Findings: Signal Predictability vs.\ Implementation Drag}
+Our empirical results demonstrate a clear tension: \textbf{statistically robust mean-reverting signals exist in the cross-section of Indian single-stock derivatives, but statutory tax wedges and execution friction entirely eliminate net portfolio gains.}
 
-Across all three methodological families examined:
+Specifically, across the three strategy families tested:
 \begin{itemize}
-    \item \textbf{Strategy A (Gatev et al.\ 2006 Distance Pairs):} Generates a gross annualized Sharpe ratio of $+0.95$ ($t\text{-stat} = +4.11$, $p < 0.001$). Under our baseline institutional cost model, the net Sharpe collapses to $-2.52$ with an annualized net loss of $-25.16\%$.
-    \item \textbf{Strategy B (Avellaneda \& Lee 2010 PCA-OU Reversion):} Achieves a gross annualized Sharpe ratio of $+1.74$ ($t\text{-stat} = +7.49$, $p < 0.001$). After dated transaction costs, the net Sharpe collapses to $-1.63$ ($t\text{-stat} = -7.00$), yielding a $-16.75\%$ net loss per annum.
-    \item \textbf{Strategy C (ML-Enhanced Walk-Forward Residuals):} Demonstrates an impressive gross Sharpe of $+1.00$ ($t\text{-stat} = +4.05$, $p < 0.001$). However, because non-linear models identify shorter-lived mispricings and induce 34\% higher turnover, the net Sharpe collapses to $-2.96$ ($t\text{-stat} = -12.00$, net loss $-25.91\%$).
+    \item \textbf{Strategy A (Gatev et al.\ 2006 Distance Pairs):} Generates a gross annualized Sharpe ratio of $+0.95$ ($t\text{-stat} = +4.11$, $p < 0.001$). Under baseline institutional transaction costs, net performance deteriorates to a Sharpe ratio of $-2.52$, producing an annualized loss of $-25.16\%$.
+    \item \textbf{Strategy B (Avellaneda \& Lee 2010 PCA-OU Reversion):} Delivers a gross Sharpe ratio of $+1.74$ ($t\text{-stat} = +7.49$, $p < 0.001$). Accounting for dated statutory transaction costs, the net Sharpe drops to $-1.63$ ($t\text{-stat} = -7.00$), corresponding to a $-16.75\%$ annual net loss.
+    \item \textbf{Strategy C (Walk-Forward Machine Learning Residuals):} Yields a gross Sharpe ratio of $+1.00$ ($t\text{-stat} = +4.05$, $p < 0.001$). Because non-linear predictive models target shorter-lived dislocations, portfolio turnover increases by 34\%, driving the net Sharpe ratio down to $-2.96$ ($t\text{-stat} = -12.00$, annual net loss of $-25.91\%$).
 \end{itemize}
 
-The breakeven cost multiplier across all strategies averages $0.38\times$ of baseline institutional costs. Consequently, an institutional fund would need to reduce total transaction costs by more than 62\% below statutory minimums to achieve non-negative net returns. Controlling for data-snooping via the Deflated Sharpe Ratio \citep{bailey2014deflated} and multiple testing \citep{harvey2016and,benjamini1995controlling}, zero out of twelve pre-registered strategy specifications survive. We conclude that daily statistical arbitrage in Indian single-stock F\&O is not viable as an independent, standalone alpha generator, but retains substantial economic value when repurposed as an execution timing overlay \citep{novymarx2016taxonomy}.
+Across all models, the breakeven cost multiplier averages $0.38\times$ baseline institutional costs. Achieving break-even would require an institutional investor to compress total trading friction by over 62\% relative to statutory minimums. When adjusting for multiple hypothesis testing and backtest data-mining via the Deflated Sharpe Ratio \citep{bailey2014deflated,harvey2016and,benjamini1995controlling}, zero out of twelve pre-registered model variations produce statistically positive net returns. We conclude that while daily statistical arbitrage cannot function as an independent standalone profit strategy in Indian single-stock F\&O, these mean-reverting residual signals offer meaningful practical value as execution-timing overlays for long-only or institutional rebalancing \citep{novymarx2016taxonomy}.
 
-\section{Indian Market Microstructure and Institutional Costs}
+\section{Institutional Framework and Transaction Cost Architecture}
 \label{sec:microstructure}
 
-Trading statistical arbitrage in India requires navigating a fundamentally different market structure than in North America or Western Europe. Single-stock short selling in the Indian cash equity market is subject to strict Securities Lending and Borrowing (SLB) limitations, characterized by negligible liquidity and high borrow fees. Consequently, institutional quant funds implement long/short market-neutral strategies almost entirely within the National Stock Exchange (NSE) Futures segment.
+Implementing statistical arbitrage in India requires operating under institutional constraints that differ substantially from developed markets. Cash equity shorting is hindered by low participation in the formal Securities Lending and Borrowing mechanism, making single-stock futures contracts the primary route for short legs in market-neutral portfolios.
 
-\subsection{Dated Statutory Fee Architecture}
-Unlike jurisdictions with negotiated or zero-commission fee tiers, Indian futures transactions incur statutory government taxes and exchange fees that apply to all institutional participants \citep{bose2007securities}:
+\subsection{Statutory Indian Derivative Fee Schedule}
+Unlike jurisdictions with zero-commission retail trading or negotiated maker-taker models, transactions in Indian single-stock futures face mandatory government taxes and exchange fees that apply across all institutional market participants \citep{bose2007securities}:
 \begin{enumerate}
-    \item \textbf{Securities Transaction Tax (STT):} Imposed exclusively on the sell side of futures transactions. Historically fixed at 0.0125\% ($1.25$ bps), STT was raised by 60\% to 0.0200\% ($2.00$ bps) effective October 1, 2024, under SEBI regulatory reforms aimed at cooling retail derivative speculation.
-    \item \textbf{Stamp Duty:} Standardized nationwide under the Indian Stamp Act at 0.0020\% ($0.20$ bps) on the buy side.
-    \item \textbf{Exchange Transaction Charges (NSE):} Blended rate of 0.0019\% ($0.19$ bps) levied on both buy and sell legs ($0.38$ bps round-trip).
-    \item \textbf{SEBI Turnover Fees:} Fixed regulatory levy of 0.0001\% ($0.01$ bps) on both legs ($0.02$ bps round-trip).
-    \item \textbf{Goods and Services Tax (GST):} 18.0\% tax levied on brokerage and exchange transaction fees ($\approx 0.12$ bps round-trip).
+    \item \textbf{Securities Transaction Tax (STT):} Charged exclusively on the sell leg of futures transactions. Historically set at 0.0125\% ($1.25$ bps), STT was raised by 60\% to 0.0200\% ($2.00$ bps) effective October 1, 2024, as part of SEBI measures to moderate derivative speculative volume.
+    \item \textbf{Stamp Duty:} Applied uniformly across states under the Indian Stamp Act at 0.0020\% ($0.20$ bps) on buy transactions.
+    \item \textbf{Exchange Turnover Charges (NSE):} Blended fee of 0.0019\% ($0.19$ bps) assessed on both entry and exit legs ($0.38$ bps round-trip).
+    \item \textbf{SEBI Regulatory Fees:} Standard regulatory turnover fee of 0.0001\% ($0.01$ bps) on each leg ($0.02$ bps round-trip).
+    \item \textbf{Goods and Services Tax (GST):} 18.0\% tax levied on brokerage and exchange transaction charges ($\approx 0.12$ bps round-trip).
 \end{enumerate}
 
-\subsection{Execution Slippage and Liquidity Microstructure}
-Following the market microstructure frameworks of \citet{roll1984simple}, \citet{lesmond1999new}, and \citet{amihud2002illiquidity}, real-world execution friction consists of both explicit tax charges and implicit market impact slippage. To accurately reflect institutional execution constraints without assuming infinite liquidity \citep{frazzini2018trading}, we model execution slippage using Average Daily Traded Value (ADTV) liquidity tiers:
+\subsection{Liquidity-Tiered Slippage and Total Friction Model}
+Following established microstructure literature \citep{roll1984simple,lesmond1999new,amihud2002illiquidity,frazzini2018trading}, execution friction includes both statutory taxes and bid-ask spread impact. To model institutional order execution realistically without assuming limitless market depth, we assign execution slippage across Average Daily Traded Value (ADTV) tiers:
 \begin{equation}
     \text{Slippage}_{\text{tier}} = \begin{cases}
         2.0 \text{ bps per leg (}4.0\text{ bps round-trip)} & \text{if ADTV} \ge \text{Rs.~100 Cr} \\
@@ -97,19 +97,19 @@ Following the market microstructure frameworks of \citet{roll1984simple}, \citet
     \end{cases}
 \end{equation}
 
-The total institutional round-trip transaction cost $C_{i,t}$ for stock $i$ at date $t$ is expressed as:
+The total institutional round-trip transaction cost $C_{i,t}$ for stock $i$ on date $t$ is formulated as:
 \begin{equation}
     C_{i,t} = \text{STT}_t + \text{Stamp} + 2 \times (\text{NSE}_{\text{fee}} + \text{SEBI}_{\text{fee}}) + \text{GST} + 2 \times \text{Slippage}_i
 \end{equation}
-Under baseline market liquidity, all-in round-trip costs average $6.5$ basis points prior to October 2024, and $7.3$ basis points post-October 2024. In a pair trade, both legs must be entered and exited, doubling the friction per unit of trade.
+For a typical large-cap derivative stock, round-trip costs averaged approximately $6.5$ basis points prior to October 2024, and $7.3$ basis points following the STT increase. Because pairs and factor-residual portfolios involve two simultaneous legs, entry and exit require four single-stock transactions, doubling the aggregate drag per trade cycle.
 
 \section{Data and Universe Construction}
 \label{sec:data}
 
-\subsection{Point-in-Time F\&O Universe and Survivorship Bias}
-To eliminate survivorship bias, our investment universe is reconstituted dynamically each calendar month to reflect exclusively those equity securities permitted for trading in the NSE F\&O segment. Over the 2010--2025 sample period, the size of this tradeable universe varies between 140 and 215 stocks (mean $= 182$ stocks). 
+\subsection{Point-in-Time F\&O Universe and Survivorship Control}
+To prevent survivorship bias, our investment universe is dynamically reconstituted on a monthly basis to include only those individual stocks officially approved by the NSE for single-stock F\&O trading. Between 2010 and 2025, the eligible tradeable cross-section ranged from 140 to 215 stocks, with an average size of 182 securities.
 
-Crucially, companies that were subsequently banned, excluded, or delisted from the F\&O list (such as RCOM, Reliance Power, or DHFL) are retained in the historical cross-section up to their exact official exclusion date. When an open pair position contains a constituent stock that is announced for expulsion, the position is liquidated at the final settlement price of the active contract, mirroring institutional execution constraints.
+Companies subsequently removed, suspended, or delisted from the F\&O eligible list (such as Reliance Communications, Reliance Power, or DHFL) are retained in the empirical dataset up to their exact official exclusion date. Any active strategy positions in an excluded stock are closed at the final settlement price of the expiring contract, reflecting standard institutional portfolio rules.
 
 \begin{figure}[htbp]
 \centering
@@ -118,64 +118,64 @@ Crucially, companies that were subsequently banned, excluded, or delisted from t
 \label{fig:fig7}
 \end{figure}
 
-\subsection{Corporate Action Adjustments}
-Historical closing prices are adjusted backwards for all corporate actions, including stock splits, bonus issues, and cash dividends:
+\subsection{Corporate Action Handling}
+Historical price and return series are adjusted for corporate events, including stock splits, bonus allocations, and cash dividend payouts:
 \begin{equation}
     P_{i,t}^{\text{adj}} = P_{i,t} \times \prod_{\tau > t} \left(1 - \frac{D_{i,\tau}}{P_{i,\tau - 1}}\right) \times \frac{1}{\text{SplitRatio}_\tau}
 \end{equation}
-The adjustment algorithms were validated against benchmark corporate actions across large-cap Indian stocks, including Infosys (INFY 1:1 bonus issues in 2014, 2015, and 2018) and Reliance Industries (splits and bonus events).
+Our corporate adjustment procedure was cross-checked against documented historical corporate actions in large Indian equities, including bonus distributions in Infosys (2014, 2015, and 2018) and capital restructuring in Reliance Industries.
 
-\subsection{Factor Benchmarks and Indian Risk Premia}
-To evaluate whether statistical arbitrage returns represent true idiosyncratic alpha or compensation for systematic risk, we utilize daily factor returns from the Indian Institute of Management Ahmedabad (IIMA) four-factor model \citep{agarwalla2014four}, an emerging-market adaptation of the standard \citet{fama1993common} and \citet{carhart1997persistence} factor pricing specifications, comprising:
+\subsection{Asset Pricing Factor Benchmarks}
+To determine whether strategy performance represents genuine idiosyncratic alpha rather than unintended exposures to known market factors, we benchmark strategy returns against the Indian Institute of Management Ahmedabad (IIMA) four-factor model \citep{agarwalla2014four}, an emerging-market implementation of the \citet{fama1993common} and \citet{carhart1997persistence} factor structures:
 \begin{itemize}
     \item Market risk premium ($\text{MKT} = R_m - R_f$),
     \item Size factor ($\text{SMB}$),
     \item Value factor ($\text{HML}$),
     \item Momentum factor ($\text{WML}$), and
-    \item 91-day Government of India Treasury Bill rate as the risk-free rate ($R_f$).
+    \item 91-day Government of India Treasury Bill rate ($R_f$).
 \end{itemize}
 
-\section{Methodology and Quantitative Models}
+\section{Empirical Methodology and Model Design}
 \label{sec:methodology}
 
-We implement three methodological families representing the historical evolution of statistical arbitrage from non-parametric distance pairs to statistical factor residuals and machine learning.
+We evaluate three methodological approaches representing key milestones in the development of statistical arbitrage: classical distance pairs, factor-residual Ornstein-Uhlenbeck processes, and machine learning models.
 
-\subsection{Strategy A: Distance Pairs (Gatev et al. 2006)}
-Following \citet{gatev2006pairs} and empirical refinements by \citet{vidyamurthy2004pairs} and \citet{jacobs2015determinants}, the formation period spans 252 trading days. For each stock pair $(i, j)$ in the F\&O universe, we compute the sum of squared differences (SSD) on normalized cumulative total return series:
+\subsection{Strategy A: Non-Parametric Distance Pairs}
+Following the framework of \citet{gatev2006pairs} with standard modifications \citep{vidyamurthy2004pairs,jacobs2015determinants}, each pair is formed using a 252-day formation window. For all eligible stock pairs $(i, j)$ in the F\&O universe, we calculate the sum of squared differences (SSD) on normalized cumulative return series:
 \begin{equation}
     \text{SSD}_{i,j} = \sum_{t=1}^{252} \left( \tilde{P}_{i,t} - \tilde{P}_{j,t} \right)^2, \quad \text{where } \tilde{P}_{i,t} = \prod_{\tau=1}^t (1 + R_{i,\tau})
 \end{equation}
-The top 20 pairs with the lowest SSD are selected for a subsequent 126-day trading window.
+The 20 pairs with the lowest SSD values are tracked during a subsequent 126-day trading window.
 \begin{itemize}
-    \item \textbf{Trading Rule:} A pair is opened when the normalized price spread diverges by $\ge 2.0\sigma$ (standard deviation of spread during formation). The position is closed when the spread reverts to zero, or upon reaching the 126-day holding limit, or if spread divergence exceeds $4.0\sigma$ (stop-loss).
-    \item \textbf{Execution Lag:} A strict 1-day wait is enforced between signal identification (day $t$) and trade execution (day $t+1$) to eliminate bid-ask bounce and contemporaneous execution bias.
-    \item \textbf{Capital Allocation:} Committed capital methodology is applied, allocating $1/N$ of total strategy equity to each of the $N=20$ pairs.
+    \item \textbf{Trading Rule:} A position is opened when the normalized price spread deviates by $\ge 2.0\sigma$ (using formation-period spread standard deviation). Trades are exited upon spread convergence to zero, at the end of the 126-day window, or upon reaching a $4.0\sigma$ stop-loss threshold.
+    \item \textbf{Execution Delay:} A 1-day wait is strictly enforced between signal generation (day $t$) and trade implementation (day $t+1$) to rule out bid-ask bounce and lookahead bias.
+    \item \textbf{Capital Allocation:} Capital is committed equally across the $N=20$ monitored pairs ($1/N$ allocation).
 \end{itemize}
 
-\subsection{Strategy B: PCA-Residual Mean Reversion (Avellaneda \& Lee 2010)}
-\citet{avellaneda2010statistical} generalize pairs trading into multi-factor residual space. On each trading day, we compute the empirical correlation matrix of daily returns over a rolling 252-day window and extract the top $k=5$ principal components as statistical factors $F_k(t)$.
+\subsection{Strategy B: PCA-Residual Mean Reversion}
+Following \citet{avellaneda2010statistical}, individual stock returns are projected onto systematic statistical factors. Each trading day, principal component analysis is performed on the rolling 252-day empirical return correlation matrix to extract the top $k=5$ principal components $F_k(t)$.
 
-Stock returns are regressed cross-sectionally on the factor returns:
+Cross-sectional regressions relate stock returns to factor realizations:
 \begin{equation}
     R_{i,t} = \beta_{i,0} + \sum_{m=1}^k \beta_{i,m} F_{m,t} + \epsilon_{i,t}
 \end{equation}
-The cumulative residuals $X_{i,t} = \sum_{\tau=1}^t \epsilon_{i,\tau}$ are modeled as an Ornstein-Uhlenbeck (OU) process:
+Cumulative residuals $X_{i,t} = \sum_{\tau=1}^t \epsilon_{i,\tau}$ are modeled as a continuous-time Ornstein-Uhlenbeck process:
 \begin{equation}
     dX_{i,t} = \kappa_i (\theta_i - X_{i,t}) dt + \sigma_i dW_{i,t}
 \end{equation}
-Parameters are estimated via rolling 60-day AR(1) regressions. The dimensionless $s$-score is defined as:
+Model parameters are calibrated via rolling 60-day AR(1) regressions. The normalized $s$-score is computed as:
 \begin{equation}
     s_{i,t} = \frac{X_{i,t} - \theta_i}{\sigma_{\text{eq},i}}, \quad \text{where } \sigma_{\text{eq},i} = \frac{\sigma_i}{\sqrt{2\kappa_i}}
 \end{equation}
-Positions are opened when $|s_{i,t}| > 1.25$ and closed when $|s_{i,t}| < 0.50$ (or stopped at $|s_{i,t}| > 3.00$). The portfolio is maintained in dollar neutrality with a maximum individual weight constraint of 10\%.
+Positions are initiated when $|s_{i,t}| > 1.25$ and closed when $|s_{i,t}| < 0.50$ (or stopped at $|s_{i,t}| > 3.00$). The aggregate portfolio is rebalanced to dollar neutrality, subject to a 10\% cap on individual stock weights.
 
-\subsection{Strategy C: ML-Enhanced Walk-Forward Residuals}
-Building upon modern machine learning asset pricing architectures \citep{gu2020empirical,guijarro2021deep,lopezdeprado2018advances}, we train walk-forward predictive models to predict the 5-day forward residual mean-reversion direction.
+\subsection{Strategy C: Walk-Forward Machine Learning Residuals}
+Extending quantitative residual models through machine learning \citep{gu2020empirical,guijarro2021deep,lopezdeprado2018advances}, we train walk-forward predictive algorithms to forecast 5-day forward residual mean-reversion directions.
 \begin{itemize}
-    \item \textbf{Validation Protocol:} Expanding-window walk-forward validation (initial training 2010--2015, out-of-sample evaluation 2016--2025).
-    \item \textbf{Embargo Purging:} A strict 10-day embargo gap is inserted between training and test folds to prevent autoregressive feature leakage \citep{bailey2014deflated}.
-    \item \textbf{Model Specifications:} Ridge regression ($L_2$ penalty $\alpha=1.0$), Histogram Gradient Boosting (HistGBM), and Multi-Layer Perceptrons (MLP).
-    \item \textbf{Portfolio Formation:} Stocks are ranked daily by predicted residual reversion; the portfolio goes long the top quintile (Q5) and short the bottom quintile (Q1) with dollar neutrality.
+    \item \textbf{Walk-Forward Protocol:} Expanding-window walk-forward training is used, starting with 2010--2015 as the initial training set and evaluating out-of-sample performance over 2016--2025.
+    \item \textbf{Embargo Gap:} A 10-day purging embargo separates training and test windows to prevent serial correlation leakage \citep{bailey2014deflated}.
+    \item \textbf{Architectures Tested:} Ridge regression ($L_2$ regularization $\alpha=1.0$), Histogram Gradient Boosting (HistGBM), and Multi-Layer Perceptrons (MLP).
+    \item \textbf{Portfolio Construction:} Securities are ranked by predicted reversion scores; the portfolio takes long positions in the top quintile (Q5) and short positions in the bottom quintile (Q1), maintaining dollar neutrality.
 \end{itemize}
 
 \begin{figure}[htbp]
@@ -186,15 +186,15 @@ Building upon modern machine learning asset pricing architectures \citep{gu2020e
 \end{figure}
 
 \subsection{Statistical Inference and Multiple Testing Guardrails}
-All return series are evaluated using \citet{newey1987simple} HAC $t$-statistics with Bartlett kernel bandwidth $L = 4(T/100)^{2/9}$. Non-parametric 95\% confidence intervals are estimated via the \citet{politis1994stationary} stationary block bootstrap (1,000 resamples, expected block length 21 days).
+All performance series are evaluated using \citet{newey1987simple} heteroskedasticity and autocorrelation consistent (HAC) $t$-statistics with Bartlett kernel bandwidth $L = 4(T/100)^{2/9}$. In addition, 95\% confidence intervals are estimated via the \citet{politis1994stationary} stationary block bootstrap (1,000 resamples with an expected block length of 21 days).
 
-To control for data-snooping across our 12 pre-registered model variations, we compute the Deflated Sharpe Ratio (DSR) of \citet{bailey2014deflated} and apply \citet{benjamini1995controlling} False Discovery Rate (FDR) adjustments.
+To adjust for data-mining across our 12 pre-registered specifications, we compute the Deflated Sharpe Ratio (DSR) of \citet{bailey2014deflated} and apply \citet{benjamini1995controlling} False Discovery Rate (FDR) corrections.
 
 \section{Empirical Results}
 \label{sec:results}
 
-\subsection{Performance Summary and the Gross-Net Wedge}
-Table~\ref{tab:table1} reports the full-sample annualized performance metrics for the baseline specifications of Strategies A, B, and C over the 16-year evaluation period (2010--2025).
+\subsection{Performance Overview: Gross Alpha vs.\ Net Realities}
+Table~\ref{tab:table1} presents full-sample annualized performance metrics across the baseline configurations of Strategies A, B, and C over the 2010--2025 backtest window.
 
 \begin{table}[htbp]
 \centering
@@ -213,7 +213,7 @@ Strategy C (ML Walk-Forward)  & +8.75\%  & -25.91\% & +1.00 & -2.96 & -12.00 & [
 }
 \end{table}
 
-In frictionless terms ($0.0\times$ cost multiplier), all three quantitative frameworks generate economically substantial and statistically robust profits. Strategy B (PCA-OU mean-reversion) delivers a gross annualized return of $+17.91\%$ with a Sharpe ratio of $+1.74$ and a Newey--West $t$-statistic of $+7.49$ ($p < 10^{-12}$). Strategy A (classical distance pairs) yields $+9.50\%$ gross annualized return with a Sharpe ratio of $+0.95$ ($t\text{-stat} = +4.11$, $p < 0.001$). Strategy C (walk-forward machine learning) achieves $+8.75\%$ gross return with a Sharpe ratio of $+1.00$ ($t\text{-stat} = +4.05$, $p < 0.001$).
+In theoretical frictionless conditions ($0.0\times$ cost multiplier), all three quantitative models demonstrate clear profitability. Strategy B (PCA-OU reversion) records a gross annualized return of $+17.91\%$ with a Sharpe ratio of $+1.74$ and a Newey--West $t$-statistic of $+7.49$ ($p < 10^{-12}$). Strategy A (distance pairs) achieves $+9.50\%$ gross annualized return with a Sharpe ratio of $+0.95$ ($t\text{-stat} = +4.11$, $p < 0.001$). Strategy C (walk-forward machine learning) delivers $+8.75\%$ gross return with a Sharpe ratio of $+1.00$ ($t\text{-stat} = +4.05$, $p < 0.001$).
 
 \begin{figure}[htbp]
 \centering
@@ -222,7 +222,7 @@ In frictionless terms ($0.0\times$ cost multiplier), all three quantitative fram
 \label{fig:fig1}
 \end{figure}
 
-However, as revealed in Figure~\ref{fig:fig1}, the transition from frictionless gross returns to institutional net returns produces a devastating performance collapse. The net annualized Sharpe ratio turns deeply negative across all three architectures: $-2.52$ for Strategy A, $-1.63$ for Strategy B, and $-2.96$ for Strategy C. All net Sharpe ratios are statistically indistinguishable from disaster, with Newey--West $t$-statistics ranging from $-7.00$ to $-12.00$ ($p < 10^{-11}$).
+As shown in Figure~\ref{fig:fig1}, however, incorporating institutional transaction friction alters the results completely. Net annualized Sharpe ratios collapse to $-2.52$ for Strategy A, $-1.63$ for Strategy B, and $-2.96$ for Strategy C. All net Sharpe values are statistically negative with Newey--West $t$-statistics between $-7.00$ and $-12.00$ ($p < 10^{-11}$).
 
 \begin{figure}[htbp]
 \centering
@@ -231,7 +231,7 @@ However, as revealed in Figure~\ref{fig:fig1}, the transition from frictionless 
 \label{fig:fig2}
 \end{figure}
 
-The drawdown underwater profiles in Figure~\ref{fig:fig2} further underscore the severity of the institutional transaction drag. While gross maximum drawdowns remain bounded between $-12.3\%$ and $-14.6\%$, net portfolios suffer continuous, grinding capital depletion, with cumulative peak-to-trough drawdowns exceeding $-95\%$ over the 16-year window.
+The drawdown underwater curves in Figure~\ref{fig:fig2} demonstrate this structural erosion. Gross peak-to-trough drawdowns stay modest between $-12.3\%$ and $-14.6\%$, whereas net portfolios suffer steady capital decay, accumulating drawdowns beyond $-95\%$ over the 16-year window.
 
 \begin{figure}[htbp]
 \centering
@@ -240,10 +240,10 @@ The drawdown underwater profiles in Figure~\ref{fig:fig2} further underscore the
 \label{fig:fig3}
 \end{figure}
 
-Figure~\ref{fig:fig3} tracks the 36-month rolling net Sharpe ratio. Across the entire 16-year backtest, the rolling net Sharpe rarely rises into positive territory for any extended period, confirming that the failure of statistical arbitrage is not confined to idiosyncratic market regimes, but represents a persistent, structural feature of the Indian equity derivatives market.
+Figure~\ref{fig:fig3} tracks rolling 36-month net Sharpe ratios. Net Sharpe performance remains negative across almost all rolling periods, illustrating that strategy losses are not artifactual byproducts of specific bear markets or isolated regimes, but a persistent feature of high-turnover trading under statutory frictions.
 
-\subsection{Sub-Period and Macro Crisis Regimes}
-To evaluate whether strategy failure is driven by specific macroeconomic shocks or structural market shifts, Table~\ref{tab:table4} decomposes performance across three distinct sub-periods: SP1 (2010--2014), SP2 (2015--2019), and SP3 (2020--2025), as well as three prominent market crisis windows.
+\subsection{Sub-Period and Stress Period Performance}
+To assess whether strategy degradation is localized to particular macro phases, Table~\ref{tab:table4} breaks down performance across sub-periods SP1 (2010--2014), SP2 (2015--2019), and SP3 (2020--2025), alongside key historical market dislocations.
 
 \begin{figure}[htbp]
 \centering
@@ -289,14 +289,14 @@ To evaluate whether strategy failure is driven by specific macroeconomic shocks 
 }
 \end{table}
 
-Key insights emerge from the sub-period decomposition:
+Two patterns in the sub-period data warrant attention:
 \begin{enumerate}
-    \item \textbf{Crisis Resilience of PCA Factor Neutrality:} During the extreme volatility of the February--March 2020 COVID-19 liquidity shock, Strategy B experienced an annualized net return of $-0.56\%$ (Sharpe $-0.06$), significantly outperforming Strategy A ($-57.45\%$) and Strategy C ($-69.86\%$). Because Strategy B explicitly strips out systematic market and sector components via principal component regression, it avoids the catastrophic divergence that afflicts naive distance pairs when macro correlations break down.
-    \item \textbf{Impact of the October 2024 STT Hike:} In the post-reform period from October 1, 2024 to December 31, 2025, when STT on futures sales rose from 1.25 bps to 2.00 bps, net annualized performance deteriorated across the board. Strategy A's net return dropped to $-31.30\%$ (Sharpe $-3.19$), and Strategy B's net return fell from its SP2 average of $-12.97\%$ to $-21.40\%$ (Sharpe $-2.05$). This empirical shift directly validates our hypothesis that statutory tax hikes disproportionately penalize high-frequency statistical arbitrageurs.
+    \item \textbf{Factor Neutrality and Crisis Stability:} During the February--March 2020 COVID-19 shock, Strategy B limited net annualized losses to $-0.56\%$ (Sharpe $-0.06$), noticeably preserving capital relative to Strategy A ($-57.45\%$) and Strategy C ($-69.86\%$). Filtering out systematic factors via PCA helped insulate Strategy B from broad correlation breakdowns that triggered divergence in naive pairs.
+    \item \textbf{Sensitivity to Regulatory Taxes:} Following the October 1, 2024 increase in futures STT from 1.25 bps to 2.00 bps, net annual losses expanded across the board. Strategy A's net return declined to $-31.30\%$ (Sharpe $-3.19$), and Strategy B's net return worsened from $-12.97\%$ in SP2 to $-21.40\%$ in the post-hike window (Sharpe $-2.05$). This deterioration illustrates how statutory fee increases directly compress quantitative margins.
 \end{enumerate}
 
 \subsection{Cost Sensitivity and Breakeven Boundaries}
-To establish the exact boundary where statistical arbitrage becomes commercially viable, we evaluate strategy performance across parametric cost multipliers ranging from $0.0\times$ (zero friction) to $1.5\times$ (high friction). Results are summarized in Table~\ref{tab:table2} and plotted in Figure~\ref{fig:fig5}.
+To identify the operational threshold required for profitability, we evaluate performance across transaction cost multipliers from $0.0\times$ (frictionless) to $1.5\times$ (elevated friction). Table~\ref{tab:table2} and Figure~\ref{fig:fig5} report the results.
 
 \begin{figure}[htbp]
 \centering
@@ -342,7 +342,7 @@ To establish the exact boundary where statistical arbitrage becomes commercially
 \label{fig:breakeven}
 \end{figure}
 
-By computing the root of the net Sharpe ratio function $\text{SR}(M) = 0$, we obtain the exact breakeven cost multipliers:
+Solving for the zero-Sharpe crossing $\text{SR}(M) = 0$ yields the following breakeven multipliers:
 \begin{equation}
     M_{\text{breakeven}} = \begin{cases}
         0.48\times & \text{(equivalent to } 7.9 \text{ bps round-trip, Strategy A)} \\
@@ -351,10 +351,10 @@ By computing the root of the net Sharpe ratio function $\text{SR}(M) = 0$, we ob
     \end{cases}
 \end{equation}
 
-As highlighted in Figure~\ref{fig:breakeven}, even in a hyper-optimized proprietary trading environment with execution costs halved to $0.5\times$ (approx.~8.5 bps round trip), Strategy A and Strategy C remain deeply unprofitable ($-7.83\%$ and $-8.58\%$ annualized). Only Strategy B barely achieves break-even ($+0.58\%$ return, Sharpe $+0.06$). Given that statutory non-negotiable government levies account for roughly 4.0 to 5.0 bps of fixed costs per round-trip trade, an institutional trader cannot compress total transaction friction below $0.50\times$, rendering standalone daily pairs and machine learning statistical arbitrage infeasible in the Indian market.
+Even under an aggressive 50\% cost reduction ($0.5\times$ multiplier, or $\sim 8.5$ bps round-trip), Strategies A and C remain unprofitable ($-7.83\%$ and $-8.58\%$ annualized). Strategy B reaches near-breakeven ($+0.58\%$ return, Sharpe $+0.06$). Because fixed statutory taxes account for roughly 4.0 to 5.0 bps per round-trip trade, institutional execution cannot realistically be compressed below $0.50\times$, precluding standalone deployment.
 
-\subsection{Factor Model Alphas and Market Neutrality}
-To verify that the empirical returns represent genuine market-neutral idiosyncratic variation rather than unhedged risk factor exposures, Table~\ref{tab:table3} presents Newey--West HAC time-series regressions of strategy net returns on the CAPM market factor and the Indian Institute of Management Ahmedabad (IIMA) four-factor benchmark \citep{agarwalla2014four}.
+\subsection{Factor Neutrality and Benchmark Risk Loadings}
+To verify that portfolio returns reflect market-neutral spread movements rather than systematic market beta, Table~\ref{tab:table3} summarizes time-series regressions of strategy net returns on the IIMA four-factor model \citep{agarwalla2014four}.
 
 \begin{table}[htbp]
 \centering
@@ -373,26 +373,26 @@ Strategy C (ML Walk-Forward)  & -32.46\% & -0.00 &  0.01 & -0.02 &  0.01 & 0.001
 }
 \end{table}
 
-Across all three frameworks, the market beta $\beta_{\text{MKT}}$ is statistically zero ($|\beta_{\text{MKT}}| \le 0.01$), and factor model $R^2$ values remain below 0.3\%. The strategies exhibit negligible loading on Size (SMB), Value (HML), and Momentum (WML). This demonstrates that the negative net returns are not caused by directional market drops or factor tilts, but represent pure transaction friction drag superimposed on a market-neutral baseline.
+Market betas across all models are close to zero ($|\beta_{\text{MKT}}| \le 0.01$), and factor model $R^2$ values remain below 0.3\%. The strategies exhibit minimal loadings on Size (SMB), Value (HML), and Momentum (WML). These results confirm that negative net returns are driven by execution drag rather than unhedged market exposure.
 
-\section{Robustness Specifications and Placebo Tests}
+\section{Robustness Analysis and Diagnostic Placebo Testing}
 \label{sec:robustness}
 
-To protect against backtest overfitting and data-snooping, our empirical design implements six pre-registered placebo diagnostic tests and twelve robustness variants.
+To verify empirical validity and guard against backtest overfitting, our research design includes six pre-registered placebo diagnostic checks and twelve robustness specifications.
 
-\subsection{Placebo Diagnostic Battery}
-All six placebo sanity tests were implemented and passed prior to full-sample analysis:
+\subsection{Diagnostic Placebo Tests}
+All six placebo diagnostics were executed and confirmed before finalizing the full-sample study:
 \begin{enumerate}
-    \item \textbf{PL1 (Planted Cointegrated Pair):} An artificial pair with planted cointegration ($\alpha=0.85$, stationary AR(1) spread) is injected into the pipeline. The Augmented Dickey-Fuller (ADF) test rejects the unit root ($p < 0.001$), and the strategy successfully captures positive gross returns ($> +20\%$ annualized).
-    \item \textbf{PL2 (Random Walk Placebo):} Strategy A is executed on independent synthetic geometric Brownian motion paths. The resulting annualized Sharpe ratio is $-0.04$ with $|t\text{-stat}| = 0.28 < 1.65$, confirming no spurious pattern generation.
-    \item \textbf{PL3 (No-Lookahead Invariant):} Arbitrary price shocks injected at date $t > \tau$ produce bitwise identical return series for all $t < \tau$. The 1-day wait lag prevents contemporaneous leakage.
-    \item \textbf{PL4 (ML Target Permutation):} When future return labels $y_{t+5}$ are permuted randomly across time, the out-of-sample Sharpe ratio collapses from $+1.54$ to $+0.08 \le 0.30$.
-    \item \textbf{PL5 (Bitwise SHA256 Reproducibility):} Two independent runs with fixed random seed (seed $= 42$) produce bitwise identical SHA256 checksums on all generated trade logs.
-    \item \textbf{PL6 (Synthetic OU Calibration):} A calibrated OU residual series generates positive gross returns under Avellaneda-Lee trading rules, proving absence of signal sign inversion.
+    \item \textbf{PL1 (Planted Cointegrated Pair):} A synthetic pair with known cointegration ($\alpha=0.85$, stationary AR(1) spread) is injected into the data pipeline. Augmented Dickey-Fuller tests cleanly reject the unit root ($p < 0.001$), and the model captures positive gross returns ($> +20\%$ annualized).
+    \item \textbf{PL2 (Random Walk Benchmark):} Strategy A is applied to independent geometric Brownian motion price paths. The resulting Sharpe ratio is $-0.04$ with $|t\text{-stat}| = 0.28 < 1.65$, confirming no spurious pattern generation on uncoupled assets.
+    \item \textbf{PL3 (Lookahead Invariance Check):} Synthetic price shocks added at date $t > \tau$ generate bitwise identical return histories for all $t < \tau$. The 1-day execution lag prevents contemporaneous lookahead bias.
+    \item \textbf{PL4 (Target Permutation Test):} Randomly permuting forward return targets $y_{t+5}$ across time causes the out-of-sample Sharpe ratio to drop from $+1.54$ to $+0.08 \le 0.30$.
+    \item \textbf{PL5 (Bitwise SHA256 Reproducibility):} Independent repeated runs with a fixed seed (seed $= 42$) generate identical SHA256 hashes across all trade records.
+    \item \textbf{PL6 (Synthetic OU Calibration):} A simulated mean-reverting OU series yields positive gross performance under Avellaneda-Lee trading rules, verifying proper signal polarity.
 \end{enumerate}
 
-\subsection{Pre-Registered Robustness Variants and Deflated Sharpe Ratios}
-Table~\ref{tab:table7} presents the complete summary of all 12 pre-registered model specifications evaluated in `trial_registry.csv`.
+\subsection{Robustness Specifications and Multiple Testing Corrections}
+Table~\ref{tab:table7} details the complete trial registry covering all 12 pre-registered model variations.
 
 \begin{table}[htbp]
 \centering
@@ -422,22 +422,22 @@ Strategy\_C\_R11\_1Day        & ML 1-Day Rapid Rebalance           & +1.61 & -4.
 }
 \end{table}
 
-Following the multiple-testing recommendations of \citet{harvey2016and} and \citet{hou2020replicating}, we compute the Deflated Sharpe Ratio (DSR) of \citet{bailey2014deflated} accounting for the number of tested trials ($N=12$), the negative skewness of net returns, and return variance; the DSR for net returns across all 12 variations is $0.000$. Controlling the False Discovery Rate at $\alpha=0.05$ via \citet{benjamini1995controlling}, zero out of twelve specifications survive. This rigorous non-significance proves that the failure of statistical arbitrage to survive net of costs is structural across all parameter spaces.
+Accounting for the total number of specifications evaluated ($N=12$), the negative skewness of net returns, and return variance \citep{bailey2014deflated}, the Deflated Sharpe Ratio (DSR) across all variations is $0.000$. Under False Discovery Rate control at $\alpha=0.05$ \citep{benjamini1995controlling}, zero of the twelve variants show positive significance. The failure of net returns to survive trading costs is therefore consistent across parameter choices.
 
 \section{Conclusion and Practical Implications}
 \label{sec:conclusion}
 
-This study provides the first comprehensive, long-horizon (2010--2025) empirical analysis of statistical arbitrage in Indian single-stock F\&O markets across classical distance pairs, PCA factor residual models, and walk-forward machine learning architectures. 
+This study provides a 16-year empirical examination of statistical arbitrage in the Indian single-stock derivatives market across distance pairs, PCA factor residual models, and walk-forward machine learning algorithms.
 
-Our investigation yields four primary insights for quantitative researchers, portfolio managers, and market regulators:
+Four key insights emerge for quantitative practitioners and market regulators:
 \begin{enumerate}
-    \item \textbf{Statistical vs.\ Economic Significance:} Econometric tests confirm that mean-reversion anomalies exist in Indian equities with overwhelming statistical significance in frictionless returns ($t$-stats $> 4.0$). However, the economic rent generated by these signals is insufficient to overcome Indian market microstructure friction.
-    \item \textbf{The Microstructure Tax Wedge:} Unlike US markets where transactional frictions are measured in single basis points, statutory Indian levies (STT, Stamp Duty, GST, exchange fees) combined with real-world bid-ask slippage impose 12.0 to 18.5 basis points of friction per round trip. Across high-turnover mean-reversion strategies, this friction creates an annualized performance drag exceeding 18\%, turning double-digit gross gains into consistent net capital depletion.
-    \item \textbf{The Limits of Machine Learning:} Advanced machine learning models (Ridge regression, Gradient Boosting, MLPs) succeed in raising gross Sharpe ratios from $+1.28$ to $+1.54$. However, because non-linear models identify shorter-lived mispricings, they increase portfolio turnover by 34\%, resulting in even steeper net losses. Machine learning cannot compensate for execution friction when the friction scales linearly with portfolio turnover, confirming the empirical findings of \citet{novymarx2016taxonomy} and \citet{do2012are} in emerging derivative markets.
-    \item \textbf{Repurposing as Execution Alpha:} While standalone daily statistical arbitrage is unviable in Indian single-stock F\&O, the residual signals retain immense commercial utility when repurposed as an execution timing tool. Fundamental and momentum portfolio managers can harvest 20 to 40 basis points in execution savings by delaying or accelerating planned trades based on Ornstein-Uhlenbeck residual displacement.
+    \item \textbf{Predictability vs.\ Profitability:} While mean-reverting signals exist in Indian equities with statistical significance in frictionless returns ($t$-stats $> 4.0$), the magnitude of the underlying mispricings is smaller than the round-trip friction required to trade them.
+    \item \textbf{Impact of Statutory Tax Wedges:} Mandatory Indian taxes and exchange levies (STT, stamp duty, GST, turnover fees) coupled with bid-ask slippage impose between 12.0 and 18.5 basis points of friction per completed pairs cycle. For strategies that trade frequently, this creates an annualized drag exceeding 18\%, turning theoretical gains into net capital losses.
+    \item \textbf{Trade-Offs in Machine Learning:} Non-linear and machine learning models improve gross return predictability (raising gross Sharpe from $+1.28$ to $+1.54$), but identify shorter-lived mispricings that increase portfolio turnover by 34\%. This extra turnover leads to deeper net losses, highlighting how algorithmic sophistication cannot compensate for structural trading friction \citep{novymarx2016taxonomy}.
+    \item \textbf{Utility as Execution Timing Overlays:} Although standalone daily statistical arbitrage is unviable in Indian single-stock F\&O, the residual signals retain clear practical value for execution management. Institutions and long-only funds can utilize Ornstein-Uhlenbeck residual displacement to pace planned orders, potentially capturing 20 to 40 basis points in execution improvement.
 \end{enumerate}
 
-Finally, from a regulatory perspective, the October 1, 2024 increase in Securities Transaction Tax further elevates the barrier to liquidity provision. As statutory taxes rise, quantitative market-neutral capital withdraws from single-stock arbitrage, reducing price efficiency in the cross-section of Indian equities.
+From a market design perspective, the October 2024 increase in Securities Transaction Tax raises the cost threshold for quantitative market-neutral strategies. As statutory trading costs increase, high-turnover arbitrage capital scales back, with potential consequences for relative-value price discovery across Indian equity derivatives.
 
 
 \bibliographystyle{plainnat}
