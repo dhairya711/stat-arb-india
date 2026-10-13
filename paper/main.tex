@@ -1,5 +1,4 @@
-﻿\documentclass[11pt,a4paper]{article}
-
+\documentclass[11pt,a4paper]{article}
 \usepackage[margin=1in]{geometry}
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{booktabs}
@@ -18,7 +17,7 @@
 }
 
 \title{\textbf{Does Statistical Arbitrage Survive in Indian F\&O Stocks?}\\
-\large Distance Pairs (Gatev et al. 2006), PCA-Residual Mean Reversion (Avellaneda-Lee 2010), and ML-Enhanced Residual Reversion, 2010--2025}
+\large Distance Pairs (Gatev et al.\ 2006), PCA-Residual Mean Reversion (Avellaneda--Lee 2010), and ML-Enhanced Residual Reversion, 2010--2025}
 
 \author{
     \textbf{Dhairya Dani} \\
@@ -33,7 +32,7 @@
 \maketitle
 
 \begin{abstract}
-We conduct an extensive, pre-registered out-of-sample investigation into whether statistical arbitrage strategies survive in the National Stock Exchange of India (NSE) single-stock Futures \& Options (F\&O) universe over the 16-year period from 2010 through 2025. Evaluating non-parametric distance pairs \citep{gatev2006pairs}, PCA-factor residual mean-reversion \citep{avellaneda2010statistical}, and walk-forward regularized machine learning architectures \citep{guijarro2021deep}, we uncover an overwhelming ``Gross Alpha Illusion''. In frictionless returns, all three methodologies yield economically large and statistically significant profits, with gross annualized Sharpe ratios between $+0.95$ and $+1.74$ (Newey-West $t$-statistics from $+4.05$ to $+7.49$). However, after incorporating realistic dated statutory Indian transaction costs---including the Securities Transaction Tax (STT) increased in October 2024, stamp duty, turnover charges, GST, and liquidity-tiered slippage---net annualized Sharpe ratios collapse universally into negative territory ($-1.63$ to $-2.96$), resulting in annual capital depletion of $-16.7\%$ to $-25.9\%$. The average breakeven cost multiplier is $0.38\times$ of baseline institutional costs. Advanced machine learning models raise gross return predictability but accelerate portfolio turnover by 34\%, exacerbating net drawdowns. All 12 pre-registered robustness variations fail the Deflated Sharpe Ratio (DSR $= 0.000$) and False Discovery Rate adjustments. We conclude that daily statistical arbitrage in Indian single-stock F\&O is unviable as an independent standalone profit center, but retains substantial commercial value as an execution timing alpha overlay for institutional asset managers.
+We conduct an extensive, pre-registered out-of-sample investigation into whether statistical arbitrage strategies survive in the National Stock Exchange of India (NSE) single-stock Futures \& Options (F\&O) universe over the 16-year period from 2010 through 2025. Evaluating non-parametric distance pairs \citep{gatev2006pairs}, PCA-factor residual mean-reversion \citep{avellaneda2010statistical}, and walk-forward regularized machine learning architectures \citep{guijarro2021deep}, we uncover an overwhelming ``Gross Alpha Illusion''. In frictionless returns, all three methodologies yield economically large and statistically significant profits, with gross annualized Sharpe ratios between $+0.95$ and $+1.74$ (Newey--West $t$-statistics from $+4.05$ to $+7.49$). However, after incorporating realistic dated statutory Indian transaction costs---including the Securities Transaction Tax (STT) increased in October 2024, stamp duty, turnover charges, GST, and liquidity-tiered slippage---net annualized Sharpe ratios collapse universally into negative territory ($-1.63$ to $-2.96$), resulting in annual capital depletion of $-16.7\%$ to $-25.9\%$. The average breakeven cost multiplier is $0.38\times$ of baseline institutional costs. Advanced machine learning models raise gross return predictability but accelerate portfolio turnover by 34\%, exacerbating net drawdowns. All 12 pre-registered robustness variations fail the Deflated Sharpe Ratio ($\text{DSR} = 0.000$) and False Discovery Rate adjustments. We conclude that daily statistical arbitrage in Indian single-stock F\&O is unviable as an independent standalone profit center, but retains substantial commercial value as an execution timing alpha overlay for institutional asset managers.
 \end{abstract}
 
 \vspace{1em}
@@ -54,8 +53,6 @@ We conduct an extensive, pre-registered out-of-sample investigation into whether
 \input{sections/06_robustness_placebos}
 \input{sections/07_conclusion}
 
-\newpage
-\newpage
 \bibliographystyle{plainnat}
 \bibliography{references}
 

@@ -1,32 +1,31 @@
-\section{Data and Universe Construction}
-\label{sec:data}
-
-\subsection{Point-in-Time F\&O Universe and Survivorship Bias}
-To eliminate survivorship bias, our investment universe is reconstituted dynamically each calendar month to reflect exclusively those equity securities permitted for trading in the NSE F\&O segment. Over the 2010--2025 sample period, the size of this tradeable universe varies between 140 and 215 stocks (mean $= 182$ stocks). 
-
-Crucially, companies that were subsequently banned, excluded, or delisted from the F\&O list (such as RCOM, Reliance Power, or DHFL) are retained in the historical cross-section up to their exact official exclusion date. When an open pair position contains a constituent stock that is announced for expulsion, the position is liquidated at the final settlement price of the active contract, mirroring institutional execution constraints.
-
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.92\textwidth]{figures/fig7_universe_size_over_time.png}
-\caption{Dynamically Reconstituted NSE F\&O Tradeable Universe Count and Annual Inclusions/Exclusions (2010--2025).}
-\label{fig:fig7}
-\end{figure}
-
-\subsection{Corporate Action Adjustments}
-Historical closing prices are adjusted backwards for all corporate actions, including stock splits, bonus issues, and cash dividends:
-\begin{equation}
-    P_{i,t}^{\text{adj}} = P_{i,t} \times \prod_{\tau > t} \left(1 - \frac{D_{i,\tau}}{P_{i,\tau - 1}}\right) \times \frac{1}{\text{SplitRatio}_\tau}
-\end{equation}
-The adjustment algorithms were validated against benchmark corporate actions across large-cap Indian stocks, including Infosys (INFY 1:1 bonus issues in 2014, 2015, and 2018) and Reliance Industries (splits and bonus events).
-
-\subsection{Factor Benchmarks and Indian Risk Premia}
-To evaluate whether statistical arbitrage returns represent true idiosyncratic alpha or compensation for systematic risk, we utilize daily factor returns from the Indian Institute of Management Ahmedabad (IIMA) four-factor model \citep{agarwalla2014four}, an emerging-market adaptation of the standard \citet{fama1993common} and \citet{carhart1997persistence} factor pricing specifications, comprising:
-\begin{itemize}
-    \item Market risk premium ($\text{MKT} = R_m - R_f$),
-    \item Size factor ($\text{SMB}$),
-    \item Value factor ($\text{HML}$),
-    \item Momentum factor ($\text{WML}$), and
-    \item 91-day Government of India Treasury Bill rate as the risk-free rate ($R_f$).
-\end{itemize}
+\section{Data and Universe Construction}
+\label{sec:data}
+
+\subsection{Point-in-Time F\&O Universe and Survivorship Bias}
+To eliminate survivorship bias, our investment universe is reconstituted dynamically each calendar month to reflect exclusively those equity securities permitted for trading in the NSE F\&O segment. Over the 2010--2025 sample period, the size of this tradeable universe varies between 140 and 215 stocks (mean $= 182$ stocks). 
+
+Crucially, companies that were subsequently banned, excluded, or delisted from the F\&O list (such as RCOM, Reliance Power, or DHFL) are retained in the historical cross-section up to their exact official exclusion date. When an open pair position contains a constituent stock that is announced for expulsion, the position is liquidated at the final settlement price of the active contract, mirroring institutional execution constraints.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.92\textwidth]{figures/fig7_universe_size_over_time.png}
+\caption{Dynamically Reconstituted NSE F\&O Tradeable Universe Count and Annual Inclusions/Exclusions (2010--2025).}
+\label{fig:fig7}
+\end{figure}
+
+\subsection{Corporate Action Adjustments}
+Historical closing prices are adjusted backwards for all corporate actions, including stock splits, bonus issues, and cash dividends:
+\begin{equation}
+    P_{i,t}^{\text{adj}} = P_{i,t} \times \prod_{\tau > t} \left(1 - \frac{D_{i,\tau}}{P_{i,\tau - 1}}\right) \times \frac{1}{\text{SplitRatio}_\tau}
+\end{equation}
+The adjustment algorithms were validated against benchmark corporate actions across large-cap Indian stocks, including Infosys (INFY 1:1 bonus issues in 2014, 2015, and 2018) and Reliance Industries (splits and bonus events).
+
+\subsection{Factor Benchmarks and Indian Risk Premia}
+To evaluate whether statistical arbitrage returns represent true idiosyncratic alpha or compensation for systematic risk, we utilize daily factor returns from the Indian Institute of Management Ahmedabad (IIMA) four-factor model \citep{agarwalla2014four}, an emerging-market adaptation of the standard \citet{fama1993common} and \citet{carhart1997persistence} factor pricing specifications, comprising:
+\begin{itemize}
+    \item Market risk premium ($\text{MKT} = R_m - R_f$),
+    \item Size factor ($\text{SMB}$),
+    \item Value factor ($\text{HML}$),
+    \item Momentum factor ($\text{WML}$), and
+    \item 91-day Government of India Treasury Bill rate as the risk-free rate ($R_f$).
+\end{itemize}
