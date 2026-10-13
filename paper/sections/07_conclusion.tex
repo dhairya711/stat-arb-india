@@ -1,14 +1,14 @@
-\section{Conclusion and Practical Implications}
+\section{Conclusion and Practical Takeaways}
 \label{sec:conclusion}
 
-This study provides a 16-year empirical examination of statistical arbitrage in the Indian single-stock derivatives market across distance pairs, PCA factor residual models, and walk-forward machine learning algorithms.
+This paper provides a 16-year empirical look at statistical arbitrage in Indian single-stock derivatives across distance pairs, PCA factor residuals, and machine learning models.
 
-Four key insights emerge for quantitative practitioners and market regulators:
+Four practical takeaways stand out:
 \begin{enumerate}
-    \item \textbf{Predictability vs.\ Profitability:} While mean-reverting signals exist in Indian equities with statistical significance in frictionless returns ($t$-stats $> 4.0$), the magnitude of the underlying mispricings is smaller than the round-trip friction required to trade them.
-    \item \textbf{Impact of Statutory Tax Wedges:} Mandatory Indian taxes and exchange levies (STT, stamp duty, GST, turnover fees) coupled with bid-ask slippage impose between 12.0 and 18.5 basis points of friction per completed pairs cycle. For strategies that trade frequently, this creates an annualized drag exceeding 18\%, turning theoretical gains into net capital losses.
-    \item \textbf{Trade-Offs in Machine Learning:} Non-linear and machine learning models improve gross return predictability (raising gross Sharpe from $+1.28$ to $+1.54$), but identify shorter-lived mispricings that increase portfolio turnover by 34\%. This extra turnover leads to deeper net losses, highlighting how algorithmic sophistication cannot compensate for structural trading friction \citep{novymarx2016taxonomy}.
-    \item \textbf{Utility as Execution Timing Overlays:} Although standalone daily statistical arbitrage is unviable in Indian single-stock F\&O, the residual signals retain clear practical value for execution management. Institutions and long-only funds can utilize Ornstein-Uhlenbeck residual displacement to pace planned orders, potentially capturing 20 to 40 basis points in execution improvement.
+    \item \textbf{Statistical Signals vs.\ Trading Reality:} While mean-reverting signals exist in Indian stocks with strong statistical confidence ($t > 4.0$), the typical spread deviation is smaller than the cost of entering and exiting the trade.
+    \item \textbf{The Tax Barrier:} Mandatory Indian taxes (STT, stamp duty, GST, turnover charges) along with modest bid-ask slippage impose 12.0 to 18.5 basis points of friction per completed pairs cycle. For active daily strategies, this creates an annual drag exceeding 18\%, turning theoretical gains into severe net losses.
+    \item \textbf{The Machine Learning Trade-Off:} Machine learning models do a better job of identifying short-term price moves on paper, but they increase portfolio turnover by 34\%. This extra churn creates even heavier net losses, showing that algorithmic complexity cannot overcome fixed statutory friction \citep{novymarx2016taxonomy}.
+    \item \textbf{Value as an Execution Timing Tool:} Even though statistical arbitrage cannot work as an independent profit center in Indian single-stock F\&O, the residual signals are genuinely useful for execution desks. Portfolio managers who already need to rebalance long positions can use Ornstein-Uhlenbeck residuals to time their orders, potentially saving 20 to 40 basis points in execution costs.
 \end{enumerate}
 
-From a market design perspective, the October 2024 increase in Securities Transaction Tax raises the cost threshold for quantitative market-neutral strategies. As statutory trading costs increase, high-turnover arbitrage capital scales back, with potential consequences for relative-value price discovery across Indian equity derivatives.
+Finally, SEBI's October 2024 increase in Securities Transaction Tax raises the cost bar even higher for quantitative market-neutral strategies. As statutory friction grows, high-turnover arbitrage capital inevitably pulls back, with potential implications for relative price efficiency across Indian derivative markets.

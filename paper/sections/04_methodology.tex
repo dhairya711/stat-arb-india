@@ -1,44 +1,44 @@
-\section{Empirical Methodology and Model Design}
+\section{Strategy Design and Methodology}
 \label{sec:methodology}
 
-We evaluate three methodological approaches representing key milestones in the development of statistical arbitrage: classical distance pairs, factor-residual Ornstein-Uhlenbeck processes, and machine learning models.
+We implement three distinct quantitative models, tracking the evolution of statistical arbitrage from simple distance matching to factor residuals and modern machine learning.
 
-\subsection{Strategy A: Non-Parametric Distance Pairs}
-Following the framework of \citet{gatev2006pairs} with standard modifications \citep{vidyamurthy2004pairs,jacobs2015determinants}, each pair is formed using a 252-day formation window. For all eligible stock pairs $(i, j)$ in the F\&O universe, we calculate the sum of squared differences (SSD) on normalized cumulative return series:
+\subsection{Strategy A: Classical Distance Pairs}
+Following the classic design in \citet{gatev2006pairs} with practical tweaks \citep{vidyamurthy2004pairs,jacobs2015determinants}, we use a 252-day formation window. For every pair $(i, j)$ in the active universe, we calculate the sum of squared differences (SSD) on normalized cumulative returns:
 \begin{equation}
     \text{SSD}_{i,j} = \sum_{t=1}^{252} \left( \tilde{P}_{i,t} - \tilde{P}_{j,t} \right)^2, \quad \text{where } \tilde{P}_{i,t} = \prod_{\tau=1}^t (1 + R_{i,\tau})
 \end{equation}
-The 20 pairs with the lowest SSD values are tracked during a subsequent 126-day trading window.
+The 20 pairs with the lowest SSD are tracked over the following 126 trading days.
 \begin{itemize}
-    \item \textbf{Trading Rule:} A position is opened when the normalized price spread deviates by $\ge 2.0\sigma$ (using formation-period spread standard deviation). Trades are exited upon spread convergence to zero, at the end of the 126-day window, or upon reaching a $4.0\sigma$ stop-loss threshold.
-    \item \textbf{Execution Delay:} A 1-day wait is strictly enforced between signal generation (day $t$) and trade implementation (day $t+1$) to rule out bid-ask bounce and lookahead bias.
-    \item \textbf{Capital Allocation:} Capital is committed equally across the $N=20$ monitored pairs ($1/N$ allocation).
+    \item \textbf{Trading Rule:} A pair trade is opened when the price spread widens by $\ge 2.0\sigma$ (based on formation-period spread standard deviation). Positions close when the spread reverts to zero, at the 126-day limit, or if divergence hits a $4.0\sigma$ stop-loss.
+    \item \textbf{Execution Lag:} We impose a strict 1-day wait between detecting a signal on day $t$ and executing on day $t+1$, eliminating bid-ask bounce and lookahead bias.
+    \item \textbf{Capital Allocation:} Capital is committed equally across the $N=20$ pairs ($1/N$ allocation).
 \end{itemize}
 
 \subsection{Strategy B: PCA-Residual Mean Reversion}
-Following \citet{avellaneda2010statistical}, individual stock returns are projected onto systematic statistical factors. Each trading day, principal component analysis is performed on the rolling 252-day empirical return correlation matrix to extract the top $k=5$ principal components $F_k(t)$.
+Following \citet{avellaneda2010statistical}, we project stock returns onto statistical factors to isolate idiosyncratic moves. Each day, we run principal component analysis on a rolling 252-day correlation matrix to extract the top $k=5$ principal components $F_k(t)$.
 
-Cross-sectional regressions relate stock returns to factor realizations:
+We regress daily stock returns against factor returns:
 \begin{equation}
     R_{i,t} = \beta_{i,0} + \sum_{m=1}^k \beta_{i,m} F_{m,t} + \epsilon_{i,t}
 \end{equation}
-Cumulative residuals $X_{i,t} = \sum_{\tau=1}^t \epsilon_{i,\tau}$ are modeled as a continuous-time Ornstein-Uhlenbeck process:
+Cumulative residuals $X_{i,t} = \sum_{\tau=1}^t \epsilon_{i,\tau}$ are modeled using an Ornstein-Uhlenbeck process:
 \begin{equation}
     dX_{i,t} = \kappa_i (\theta_i - X_{i,t}) dt + \sigma_i dW_{i,t}
 \end{equation}
-Model parameters are calibrated via rolling 60-day AR(1) regressions. The normalized $s$-score is computed as:
+We calibrate parameters using rolling 60-day AR(1) regressions. The normalized $s$-score is:
 \begin{equation}
     s_{i,t} = \frac{X_{i,t} - \theta_i}{\sigma_{\text{eq},i}}, \quad \text{where } \sigma_{\text{eq},i} = \frac{\sigma_i}{\sqrt{2\kappa_i}}
 \end{equation}
-Positions are initiated when $|s_{i,t}| > 1.25$ and closed when $|s_{i,t}| < 0.50$ (or stopped at $|s_{i,t}| > 3.00$). The aggregate portfolio is rebalanced to dollar neutrality, subject to a 10\% cap on individual stock weights.
+Trades open when $|s_{i,t}| > 1.25$ and close when $|s_{i,t}| < 0.50$ (with a stop at $|s_{i,t}| > 3.00$). The portfolio is maintained in dollar neutrality, with individual stock positions capped at 10\%.
 
 \subsection{Strategy C: Walk-Forward Machine Learning Residuals}
-Extending quantitative residual models through machine learning \citep{gu2020empirical,guijarro2021deep,lopezdeprado2018advances}, we train walk-forward predictive algorithms to forecast 5-day forward residual mean-reversion directions.
+To see whether modern machine learning can improve residual trading \citep{gu2020empirical,guijarro2021deep,lopezdeprado2018advances}, we train models to forecast 5-day forward residual mean-reversion.
 \begin{itemize}
-    \item \textbf{Walk-Forward Protocol:} Expanding-window walk-forward training is used, starting with 2010--2015 as the initial training set and evaluating out-of-sample performance over 2016--2025.
-    \item \textbf{Embargo Gap:} A 10-day purging embargo separates training and test windows to prevent serial correlation leakage \citep{bailey2014deflated}.
-    \item \textbf{Architectures Tested:} Ridge regression ($L_2$ regularization $\alpha=1.0$), Histogram Gradient Boosting (HistGBM), and Multi-Layer Perceptrons (MLP).
-    \item \textbf{Portfolio Construction:} Securities are ranked by predicted reversion scores; the portfolio takes long positions in the top quintile (Q5) and short positions in the bottom quintile (Q1), maintaining dollar neutrality.
+    \item \textbf{Validation Protocol:} We use expanding-window walk-forward validation (training on 2010--2015, evaluating out-of-sample on 2016--2025).
+    \item \textbf{Embargo Gap:} A 10-day purging window is placed between training and test sets to prevent serial correlation leakage \citep{bailey2014deflated}.
+    \item \textbf{Models Tested:} Ridge regression ($L_2$ penalty $\alpha=1.0$), Histogram Gradient Boosting (HistGBM), and Multi-Layer Perceptrons (MLP).
+    \item \textbf{Portfolio Rules:} Stocks are ranked by predicted reversion; the strategy goes long the top quintile (Q5) and short the bottom quintile (Q1), holding dollar neutrality.
 \end{itemize}
 
 \begin{figure}[htbp]
@@ -48,7 +48,7 @@ Extending quantitative residual models through machine learning \citep{gu2020emp
 \label{fig:fig8}
 \end{figure}
 
-\subsection{Statistical Inference and Multiple Testing Guardrails}
-All performance series are evaluated using \citet{newey1987simple} heteroskedasticity and autocorrelation consistent (HAC) $t$-statistics with Bartlett kernel bandwidth $L = 4(T/100)^{2/9}$. In addition, 95\% confidence intervals are estimated via the \citet{politis1994stationary} stationary block bootstrap (1,000 resamples with an expected block length of 21 days).
+\subsection{Statistical Significance and Multiple Testing Controls}
+All return series are evaluated using \citet{newey1987simple} HAC $t$-statistics with Bartlett kernel bandwidth $L = 4(T/100)^{2/9}$. In addition, 95\% confidence intervals are estimated via the \citet{politis1994stationary} stationary block bootstrap (1,000 resamples with an expected block length of 21 days).
 
-To adjust for data-mining across our 12 pre-registered specifications, we compute the Deflated Sharpe Ratio (DSR) of \citet{bailey2014deflated} and apply \citet{benjamini1995controlling} False Discovery Rate (FDR) corrections.
+To guard against data-snooping across our 12 pre-registered specifications, we calculate the Deflated Sharpe Ratio (DSR) of \citet{bailey2014deflated} and apply \citet{benjamini1995controlling} False Discovery Rate (FDR) adjustments.

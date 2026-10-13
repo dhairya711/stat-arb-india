@@ -1,21 +1,21 @@
-\section{Robustness Analysis and Diagnostic Placebo Testing}
+\section{Robustness Tests and Placebo Checks}
 \label{sec:robustness}
 
-To verify empirical validity and guard against backtest overfitting, our research design includes six pre-registered placebo diagnostic checks and twelve robustness specifications.
+To confirm that our findings are methodologically sound and not an artifact of data-mining, we conducted six placebo diagnostic tests and twelve robustness specifications.
 
-\subsection{Diagnostic Placebo Tests}
-All six placebo diagnostics were executed and confirmed before finalizing the full-sample study:
+\subsection{Placebo Sanity Checks}
+All six placebo diagnostics passed prior to full-sample analysis:
 \begin{enumerate}
-    \item \textbf{PL1 (Planted Cointegrated Pair):} A synthetic pair with known cointegration ($\alpha=0.85$, stationary AR(1) spread) is injected into the data pipeline. Augmented Dickey-Fuller tests cleanly reject the unit root ($p < 0.001$), and the model captures positive gross returns ($> +20\%$ annualized).
-    \item \textbf{PL2 (Random Walk Benchmark):} Strategy A is applied to independent geometric Brownian motion price paths. The resulting Sharpe ratio is $-0.04$ with $|t\text{-stat}| = 0.28 < 1.65$, confirming no spurious pattern generation on uncoupled assets.
-    \item \textbf{PL3 (Lookahead Invariance Check):} Synthetic price shocks added at date $t > \tau$ generate bitwise identical return histories for all $t < \tau$. The 1-day execution lag prevents contemporaneous lookahead bias.
-    \item \textbf{PL4 (Target Permutation Test):} Randomly permuting forward return targets $y_{t+5}$ across time causes the out-of-sample Sharpe ratio to drop from $+1.54$ to $+0.08 \le 0.30$.
-    \item \textbf{PL5 (Bitwise SHA256 Reproducibility):} Independent repeated runs with a fixed seed (seed $= 42$) generate identical SHA256 hashes across all trade records.
-    \item \textbf{PL6 (Synthetic OU Calibration):} A simulated mean-reverting OU series yields positive gross performance under Avellaneda-Lee trading rules, verifying proper signal polarity.
+    \item \textbf{PL1 (Planted Cointegrated Pair):} We injected an artificial pair with true cointegration ($\alpha=0.85$, stationary AR(1) spread). ADF tests rejected the unit root ($p < 0.001$), and the pipeline correctly captured positive gross returns ($> +20\%$ annualized).
+    \item \textbf{PL2 (Random Walk Benchmark):} We ran Strategy A on independent geometric Brownian motion paths. The resulting Sharpe ratio was $-0.04$ with $|t| = 0.28 < 1.65$, confirming no spurious pattern generation.
+    \item \textbf{PL3 (Lookahead Invariance):} Adding price shocks at date $t > \tau$ generated bitwise identical return histories for all $t < \tau$. The 1-day execution lag effectively prevents lookahead bias.
+    \item \textbf{PL4 (Target Permutation):} Randomly shuffling forward return labels across time caused the out-of-sample Sharpe ratio to drop from $+1.54$ to $+0.08$.
+    \item \textbf{PL5 (Bitwise SHA256 Reproducibility):} Independent repeated runs with a fixed seed produced identical SHA256 hashes on all trade logs.
+    \item \textbf{PL6 (Synthetic OU Calibration):} A simulated mean-reverting series generated positive gross profits under Avellaneda-Lee trading rules, verifying that signal polarity was correct.
 \end{enumerate}
 
 \subsection{Robustness Specifications and Multiple Testing Corrections}
-Table~\ref{tab:table7} details the complete trial registry covering all 12 pre-registered model variations.
+Table~\ref{tab:table7} summarizes the complete trial registry across all 12 pre-registered model variations.
 
 \begin{table}[htbp]
 \centering
@@ -45,4 +45,4 @@ Strategy\_C\_R11\_1Day        & ML 1-Day Rapid Rebalance           & +1.61 & -4.
 }
 \end{table}
 
-Accounting for the total number of specifications evaluated ($N=12$), the negative skewness of net returns, and return variance \citep{bailey2014deflated}, the Deflated Sharpe Ratio (DSR) across all variations is $0.000$. Under False Discovery Rate control at $\alpha=0.05$ \citep{benjamini1995controlling}, zero of the twelve variants show positive significance. The failure of net returns to survive trading costs is therefore consistent across parameter choices.
+Accounting for the 12 tested models, the negative skewness of net returns, and return variance \citep{bailey2014deflated}, the Deflated Sharpe Ratio (DSR) across all variations is $0.000$. Under False Discovery Rate control at $\alpha=0.05$ \citep{benjamini1995controlling}, zero of the twelve variants show positive significance. The finding that trading friction overwhelms net profits is completely consistent across parameter setups.

@@ -6,7 +6,7 @@
 \usepackage{natbib}
 \usepackage{hyperref}
 \usepackage{caption}
-% \usepackage{microtype} % Disabled to ensure rapid compilation on Overleaf free tier
+% \usepackage{microtype} % Kept disabled to ensure rapid compile on Overleaf free tier
 \usepackage{textcomp}
 
 \hypersetup{
@@ -17,7 +17,7 @@
 }
 
 \title{\textbf{Does Statistical Arbitrage Survive in Indian Equity Derivatives?}\\
-\large Long-Horizon Evidence from Distance Pairs, PCA Factor Residuals, and Walk-Forward Machine Learning (2010--2025)}
+\large Evidence from Distance Pairs, Factor Residuals, and Machine Learning (2010--2025)}
 
 \author{
     \textbf{Dhairya Dani} \\
@@ -32,7 +32,7 @@
 \maketitle
 
 \begin{abstract}
-We examine whether statistical arbitrage strategies generate viable net excess returns in the National Stock Exchange of India (NSE) single-stock Futures \& Options (F\&O) market over a 16-year window from 2010 to 2025. Across three established quantitative methodologies---non-parametric distance pairs \citep{gatev2006pairs}, PCA-based residual mean-reversion \citep{avellaneda2010statistical}, and regularized walk-forward machine learning \citep{guijarro2021deep}---we identify a stark divergence between gross predictability and net execution performance. In theoretical, frictionless conditions, all three strategies yield positive, statistically significant gross returns, achieving gross annualized Sharpe ratios between $+0.95$ and $+1.74$ with Newey--West $t$-statistics from $+4.05$ to $+7.49$. Once actual dated statutory transaction costs (Securities Transaction Tax, stamp duty, exchange levies, GST) and realistic liquidity-tiered bid-ask slippage are subtracted, net performance turns negative across all specifications. Net annualized Sharpe ratios drop to between $-1.63$ and $-2.96$, corresponding to annual net portfolio losses of $-16.7\%$ to $-25.9\%$. The estimated breakeven transaction friction is $0.38\times$ baseline institutional costs. Machine learning models succeed in capturing shorter-lived mean-reversion signals but trigger a 34\% increase in rebalancing turnover, aggravating drag from trading friction. Across 12 pre-registered model variations, none achieve positive net significance after accounting for multiple testing and the Deflated Sharpe Ratio ($\text{DSR} = 0.000$). Our empirical findings indicate that standalone daily statistical arbitrage cannot overcome statutory frictions in Indian single-stock derivatives, though the underlying price-displacement signals provide actionable utility as execution-timing overlays for institutional rebalancing.
+Most studies on statistical arbitrage look at US markets, where borrow rates are predictable and commissions are near zero. India presents a very different reality: single-stock shorting in the cash market is essentially non-existent due to an illiquid borrow market, forcing traders into futures where taxes and exchange fees eat directly into returns. In this paper, I test whether daily statistical arbitrage works on the National Stock Exchange of India (NSE) from 2010 to 2025. I track three common frameworks: classic distance pairs \citep{gatev2006pairs}, PCA-factor residual mean-reversion \citep{avellaneda2010statistical}, and rolling machine learning models \citep{guijarro2021deep}. On paper, without friction, the signals look remarkably strong: gross Sharpe ratios hit $+0.95$ to $+1.74$, with Newey--West $t$-statistics between $+4.05$ and $+7.49$. But as soon as you plug in real-world friction---the Securities Transaction Tax (especially after the October 2024 hike), stamp duties, GST, and turnover charges, alongside modest execution slippage---the entire strategy falls apart. Net Sharpe ratios plunge into deep negative territory ($-1.63$ to $-2.96$), burning capital at $-16.7\%$ to $-25.9\%$ each year. Break-even requires cutting costs down to $0.38\times$ of actual institutional levels, which is legally impossible because statutory levies set a hard floor. Adding machine learning actually hurts net performance: while it catches short-term mispricings better on paper, it drives turnover up by 34\%, handing even more capital over to taxes. Out of 12 pre-registered robustness tests, none pass multiple-testing corrections or the Deflated Sharpe Ratio. Overall, standalone daily statistical arbitrage simply cannot survive statutory friction in India, though the underlying displacement signals still hold practical promise for institutional execution timing.
 \end{abstract}
 
 \vspace{1em}

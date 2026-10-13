@@ -1,10 +1,10 @@
 \section{Data and Universe Construction}
 \label{sec:data}
 
-\subsection{Point-in-Time F\&O Universe and Survivorship Control}
-To prevent survivorship bias, our investment universe is dynamically reconstituted on a monthly basis to include only those individual stocks officially approved by the NSE for single-stock F\&O trading. Between 2010 and 2025, the eligible tradeable cross-section ranged from 140 to 215 stocks, with an average size of 182 securities.
+\subsection{Point-in-Time Universe and Survivorship Bias}
+To make sure our results are not distorted by survivorship bias, the tradeable universe is updated on a monthly basis, matching the exact list of stocks permitted by the NSE for single-stock F\&O trading. Between 2010 and 2025, the universe fluctuated between 140 and 215 stocks, averaging 182 names over the period.
 
-Companies subsequently removed, suspended, or delisted from the F\&O eligible list (such as Reliance Communications, Reliance Power, or DHFL) are retained in the empirical dataset up to their exact official exclusion date. Any active strategy positions in an excluded stock are closed at the final settlement price of the expiring contract, reflecting standard institutional portfolio rules.
+Importantly, companies that were later kicked out of the F\&O segment or ran into severe distress (such as Reliance Communications, Reliance Power, or DHFL) remain in the dataset right up to their official removal date. If the strategy held an open position in an expiring stock, it is closed at the final settlement price of the active futures contract, just as an institutional desk would have had to do.
 
 \begin{figure}[htbp]
 \centering
@@ -13,15 +13,15 @@ Companies subsequently removed, suspended, or delisted from the F\&O eligible li
 \label{fig:fig7}
 \end{figure}
 
-\subsection{Corporate Action Handling}
-Historical price and return series are adjusted for corporate events, including stock splits, bonus allocations, and cash dividend payouts:
+\subsection{Handling Corporate Actions}
+Historical price and return histories are adjusted for all corporate actions, including stock splits, bonus shares, and dividends:
 \begin{equation}
     P_{i,t}^{\text{adj}} = P_{i,t} \times \prod_{\tau > t} \left(1 - \frac{D_{i,\tau}}{P_{i,\tau - 1}}\right) \times \frac{1}{\text{SplitRatio}_\tau}
 \end{equation}
-Our corporate adjustment procedure was cross-checked against documented historical corporate actions in large Indian equities, including bonus distributions in Infosys (2014, 2015, and 2018) and capital restructuring in Reliance Industries.
+We verified our adjustment routine against well-known corporate events in benchmark Indian equities, such as Infosys bonus issues (in 2014, 2015, and 2018) and capital reorganizations in Reliance Industries.
 
-\subsection{Asset Pricing Factor Benchmarks}
-To determine whether strategy performance represents genuine idiosyncratic alpha rather than unintended exposures to known market factors, we benchmark strategy returns against the Indian Institute of Management Ahmedabad (IIMA) four-factor model \citep{agarwalla2014four}, an emerging-market implementation of the \citet{fama1993common} and \citet{carhart1997persistence} factor structures:
+\subsection{Benchmark Risk Factors}
+To check whether strategy returns reflect true idiosyncratic alpha rather than unintended market exposures, we regress performance against the Indian Institute of Management Ahmedabad (IIMA) four-factor benchmark \citep{agarwalla2014four}, which adapts the \citet{fama1993common} and \citet{carhart1997persistence} models for the Indian market:
 \begin{itemize}
     \item Market risk premium ($\text{MKT} = R_m - R_f$),
     \item Size factor ($\text{SMB}$),
