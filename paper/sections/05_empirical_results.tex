@@ -1,186 +1,372 @@
 \section{Empirical Results}
+
 \label{sec:results}
 
+
+
 \subsection{Performance Summary and the Gross-Net Wedge}
+
 Table~\ref{tab:table1} reports the full-sample annualized performance metrics for the baseline specifications of Strategies A, B, and C over the 16-year evaluation period (2010--2025).
 
+
+
 \begin{table}[htbp]
+
 \centering
+
 \caption{Full-Sample Annualized Strategy Performance (2010--2025)}
+
 \label{tab:table1}
+
 \small
+
 \begin{tabular}{lcccccc}
+
 \toprule
+
 \textbf{Strategy} & \textbf{Gross Return} & \textbf{Net Return} & \textbf{Gross Sharpe} & \textbf{Net Sharpe} & \textbf{Net NW $-stat} & \textbf{Bootstrap 95\% CI (Sharpe)} \\
+
 \midrule
+
 Strategy A (Gatev Pairs)      & +9.50\%  & -25.16\% & +0.95 & -2.52 & -10.89 & [-2.96, -2.05] \\
+
 Strategy B (PCA-OU Reversion) & +17.91\% & -16.75\% & +1.74 & -1.63 &  -7.00 & [-2.06, -1.17] \\
+
 Strategy C (ML Walk-Forward)  & +8.75\%  & -25.91\% & +1.00 & -2.96 & -12.00 & [-3.51, -2.42] \\
+
 \bottomrule
+
 \end{tabular}
+
 \end{table}
+
+
 
 In frictionless terms (.0\times$ cost multiplier), all three quantitative frameworks generate economically substantial and statistically robust profits. Strategy B (PCA-OU mean-reversion) delivers a gross annualized return of $+17.91\%$ with a Sharpe ratio of $+1.74$ and a Newey-West $-statistic of $+7.49$ ( < 10^{-12}$). Strategy A (classical distance pairs) yields $+9.50\%$ gross annualized return with a Sharpe ratio of $+0.95$ ($-stat $= +4.11$). Strategy C (walk-forward machine learning) achieves $+8.75\%$ gross return with a Sharpe ratio of $+1.00$ ($-stat $= +4.05$).
 
+
+
 \begin{figure}[htbp]
+
 \centering
+
 \includegraphics[width=0.92\textwidth]{figures/fig1_cumulative_returns_gross_net.png}
+
 \caption{Cumulative Wealth Index: Gross (.0\times$) vs. Institutional Net (.0\times$) Across Strategies (2010--2025). Shaded regions represent market stress periods.}
+
 \label{fig:fig1}
+
 \end{figure}
+
+
 
 However, as illustrated in Figure~\ref{fig:fig1}, the introduction of baseline institutional transaction costs (.0\times$) reveals a dramatic divergence between theoretical alpha and investable returns---what we term the \textit{Gross Alpha Illusion}. Under statutory Indian derivative taxes and realistic liquidity-tiered slippage, Strategy A suffers an annualized net return of $-25.16\%$ (Net Sharpe $=-2.52$, Newey-West $-statistic $=-10.89$). Strategy B drops to $-16.75\%$ net per annum (Net Sharpe $=-1.63$, $-stat $=-7.00$). Strategy C, despite using non-linear predictive features, experiences the steepest degradation to $-25.91\%$ net per annum (Net Sharpe $=-2.96$, $-stat $=-12.00$). 
 
+
+
 The stationary block bootstrap 95\% confidence intervals for the net Sharpe ratio strictly exclude zero across all models: $[-2.96, -2.05]$ for Strategy A, $[-2.06, -1.17]$ for Strategy B, and $[-3.51, -2.42]$ for Strategy C. This establishes conclusively that the negative net performance is an invariant structural feature of the strategy mechanics rather than an artifact of outlier market shocks.
 
+
+
 \subsection{Drawdown Dynamics and Temporal Stability}
+
 The cumulative wealth trajectories depicted in Figure~\ref{fig:fig1} translate into persistent underwater drawdowns when traded net of costs.
 
+
+
 \begin{figure}[htbp]
+
 \centering
+
 \includegraphics[width=0.92\textwidth]{figures/fig2_drawdown.png}
+
 \caption{Historical Underwater Drawdown Dynamics: Baseline Net Performance Under Institutional Frictions (2010--2025).}
+
 \label{fig:fig2}
+
 \end{figure}
+
+
 
 Figure~\ref{fig:fig2} plots the historical underwater drawdown profiles for each strategy under the baseline institutional cost model. While gross strategies display modest maximum peak-to-trough drawdowns between $-12.34\%$ and $-14.57\%$ with swift recoveries, the net portfolios experience monotonic capital decay. Strategy A incurs a maximum net drawdown of $-98.57\%$, Strategy B reaches $-95.06\%$, and Strategy C suffers $-98.72\%$. Because daily trading friction acts as an ongoing negative drift, the portfolios fail to establish new high-water marks, remaining underwater for over 90\% of the 16-year sample.
 
+
+
 \begin{figure}[htbp]
+
 \centering
+
 \includegraphics[width=0.92\textwidth]{figures/fig3_rolling_sharpe.png}
+
 \caption{Rolling 12-Month Net Sharpe Ratios Across Time (2010--2025), Depicting Chronic Sub-Zero Risk-Adjusted Performance.}
+
 \label{fig:fig3}
+
 \end{figure}
+
+
 
 To assess temporal stability, Figure~\ref{fig:fig3} displays rolling 12-month net Sharpe ratios. For all three strategies, the rolling Sharpe ratio resides below zero in over 92\% of rolling windows. Even during favorable market phases (such as the low-volatility bull runs of 2014 and 2017), the rolling net Sharpe rarely breaches the $+0.5$ threshold, confirming that market environment shifts cannot overcome the frictional hurdle.
 
+
+
 \subsection{Sub-Period Stability and Crisis Episodes}
+
 To examine whether structural market reforms (such as GST implementation in 2017, T+1 settlement transition in 2023, or the October 2024 SEBI STT hike) altered strategy viability, we partition the 16-year timeline into three equal multi-year regimes (SP1: 2010--2014, SP2: 2015--2019, SP3: 2020--2025) and four high-stress crisis episodes. Results are detailed in Table~\ref{tab:table4} and visualized in Figure~\ref{fig:fig4}.
 
+
+
 \begin{figure}[htbp]
+
 \centering
+
 \includegraphics[width=0.92\textwidth]{figures/fig4_subperiod_bars.png}
+
 \caption{Sub-Period Stability: Annualized Return and Net Sharpe Across SP1 (2010--2014), SP2 (2015--2019), and SP3 (2020--2025).}
+
 \label{fig:fig4}
+
 \end{figure}
 
+
+
 \begin{table}[htbp]
+
 \centering
+
 \caption{Sub-Period and Macro Crisis Performance Breakdown (Net Returns)}
+
 \label{tab:table4}
+
 \small
+
 \begin{tabular}{lcccccc}
+
 \toprule
+
 \textbf{Regime / Crisis Window} & \textbf{Days} & \textbf{Strategy} & \textbf{Net Return} & \textbf{Net Vol} & \textbf{Net Sharpe} & \textbf{Max DD} \\
+
 \midrule
+
 \textbf{Sub-Period 1 (2010--2014)} & 1,304 & Strategy A & -28.01\% & 9.75\% & -2.87 & -77.07\% \\
+
                                    & 1,304 & Strategy B & -16.94\% & 10.40\% & -1.63 & -63.00\% \\
+
                                    & 1,304 & Strategy C & -34.37\% & ---     & ---   & -83.11\% \\
+
 \midrule
+
 \textbf{Sub-Period 2 (2015--2019)} & 1,304 & Strategy A & -23.30\% & 9.93\% & -2.35 & -70.89\% \\
+
                                    & 1,304 & Strategy B & -12.97\% & 10.28\% & -1.26 & -50.75\% \\
+
                                    & 1,304 & Strategy C & -28.47\% & 9.73\% & -2.92 & -77.62\% \\
+
 \midrule
+
 \textbf{Sub-Period 3 (2020--2025)} & 1,566 & Strategy A & -24.34\% & 10.26\% & -2.37 & -78.71\% \\
+
                                    & 1,566 & Strategy B & -19.74\% & 10.25\% & -1.93 & -74.98\% \\
+
                                    & 1,566 & Strategy C & -16.74\% & 11.19\% & -1.50 & -66.38\% \\
+
 \midrule
+
 \textbf{COVID-19 Crash (Feb--Mar 2020)} & 30 & Strategy A & -57.45\% & 10.57\% & -5.44 & -7.46\% \\
+
                                         & 30 & Strategy B & -0.56\%  & 9.44\%  & -0.06 & -3.18\% \\
+
                                         & 30 & Strategy C & -69.86\% & 8.62\%  & -8.11 & -7.43\% \\
+
 \midrule
+
 \textbf{Demonetisation (Nov--Dec 2016)} & 39 & Strategy A & -10.43\% & 10.10\% & -1.03 & -5.65\% \\
+
                                         & 39 & Strategy B & -32.40\% & 13.41\% & -2.42 & -6.49\% \\
+
                                         & 39 & Strategy C & +1.78\%  & 11.54\% & +0.15 & -3.43\% \\
+
 \midrule
+
 \textbf{Post-SEBI STT Hike (Oct 2024--2025)} & 327 & Strategy A & -31.30\% & 9.82\% & -3.19 & -35.75\% \\
+
                                              & 327 & Strategy B & -21.40\% & 10.42\% & -2.05 & -31.47\% \\
+
                                              & 327 & Strategy C & -23.00\% & 10.96\% & -2.10 & -31.23\% \\
+
 \bottomrule
+
 \end{tabular}
+
 \end{table}
+
+
 
 Key insights emerge from the sub-period decomposition:
+
 \begin{enumerate}
+
     \item \textbf{Crisis Resilience of PCA Factor Neutrality:} During the extreme volatility of the February--March 2020 COVID-19 liquidity shock, Strategy B experienced an annualized net return of $-0.56\%$ (Sharpe $-0.06$), significantly outperforming Strategy A ($-57.45\%$) and Strategy C ($-69.86\%$). Because Strategy B explicitly strips out systematic market and sector components via principal component regression, it avoids the catastrophic divergence that afflicts naive distance pairs when macro correlations break down.
+
     \item \textbf{Impact of the October 2024 STT Hike:} In the post-reform period from October 1, 2024 to December 31, 2025, when STT on futures sales rose from 1.25 bps to 2.00 bps, net annualized performance deteriorated across the board. Strategy A's net return dropped to $-31.30\%$ (Sharpe $-3.19$), and Strategy B's net return fell from its SP2 average of $-12.97\%$ to $-21.40\%$ (Sharpe $-2.05$). This empirical shift directly validates our hypothesis that statutory tax hikes disproportionately penalize high-frequency statistical arbitrageurs.
+
 \end{enumerate}
 
+
+
 \subsection{Cost Sensitivity and Breakeven Boundaries}
+
 To establish the exact boundary where statistical arbitrage becomes commercially viable, we evaluate strategy performance across parametric cost multipliers ranging from .0\times$ (zero friction) to .5\times$ (high friction). Results are summarized in Table~\ref{tab:table2} and plotted in Figure~\ref{fig:fig5}.
 
+
+
 \begin{figure}[htbp]
+
 \centering
+
 \includegraphics[width=0.92\textwidth]{figures/fig5_cost_sensitivity_curve.png}
+
 \caption{Cost Sensitivity Curves: Annualized Net Sharpe Ratio vs. Transaction Cost Multiplier (.0\times$ to .5\times$).}
+
 \label{fig:fig5}
+
 \end{figure}
+
+
 
 \begin{table}[htbp]
+
 \centering
+
 \caption{Performance Across Cost Multipliers (0.0x to 1.5x)}
+
 \label{tab:table2}
+
 \small
+
 \begin{tabular}{lccccc}
+
 \toprule
+
 \textbf{Strategy} & \textbf{Cost Multiplier} & \textbf{Annual Return} & \textbf{Sharpe Ratio} & \textbf{NW $-stat} & \textbf{Max Drawdown} \\
+
 \midrule
+
 \textbf{Strategy A (Gatev Pairs)} 
+
  & 0.0x &  +9.50\% & +0.95 &  +4.11 & -12.42\% \\
+
  & 0.5x &  -7.83\% & -0.78 &  -3.39 & -75.72\% \\
+
  & 1.0x & -25.16\% & -2.52 & -10.89 & -98.57\% \\
+
  & 1.5x & -42.49\% & -4.25 & -18.38 & -99.92\% \\
+
 \midrule
+
 \textbf{Strategy B (PCA-OU Reversion)} 
+
  & 0.0x & +17.91\% & +1.74 &  +7.49 & -14.57\% \\
+
  & 0.5x &  +0.58\% & +0.06 &  +0.24 & -34.34\% \\
+
  & 1.0x & -16.75\% & -1.63 &  -7.00 & -95.06\% \\
+
  & 1.5x & -34.08\% & -3.31 & -14.24 & -99.70\% \\
+
 \midrule
+
 \textbf{Strategy C (ML Walk-Forward)} 
+
  & 0.0x &  +8.75\% & +1.00 &  +4.05 & -12.34\% \\
+
  & 0.5x &  -8.58\% & -0.98 &  -3.97 & -80.63\% \\
+
  & 1.0x & -25.91\% & -2.96 & -12.00 & -98.72\% \\
+
  & 1.5x & -43.25\% & -4.94 & -20.03 & -99.93\% \\
+
 \bottomrule
+
 \end{tabular}
+
 \end{table}
 
+
+
 \begin{figure}[htbp]
+
 \centering
+
 \includegraphics[width=0.85\textwidth]{figures/fig6_breakeven_cost.png}
+
 \caption{Institutional Breakeven Cost Multipliers Across Strategy Families.}
+
 \label{fig:breakeven}
+
 \end{figure}
 
+
+
 By computing the root of the net Sharpe ratio function $\text{SR}(M) = 0$, we obtain the exact breakeven cost multipliers:
+
 \begin{equation}
+
     M_{\text{breakeven}} = \begin{cases}
+
         0.48\times \text{ (equivalent to } 7.9 \text{ bps round-trip, Strategy A)} \\
+
         0.90\times \text{ (equivalent to } 14.9 \text{ bps round-trip, Strategy B)} \\
+
         0.44\times \text{ (equivalent to } 7.3 \text{ bps round-trip, Strategy C)}
+
     \end{cases}
+
 \end{equation}
+
+
 
 As highlighted in Figure~\ref{fig:breakeven}, even in a hyper-optimized proprietary trading environment with execution costs halved to .5\times$ (approx.~8.5 bps round trip), Strategy A and Strategy C remain deeply unprofitable ($-7.83\%$ and $-8.58\%$ annualized). Only Strategy B barely achieves break-even ($+0.58\%$ return, Sharpe $+0.06$). Given that statutory non-negotiable government levies account for roughly 4.0 to 5.0 bps of fixed costs per round-trip trade, an institutional trader cannot compress total transaction friction below .50\times$, rendering standalone daily pairs and machine learning statistical arbitrage infeasible in the Indian market.
 
+
+
 \subsection{Factor Model Alphas and Market Neutrality}
+
 To verify that the empirical returns represent genuine market-neutral idiosyncratic variation rather than unhedged risk factor exposures, Table~\ref{tab:table3} presents Newey-West HAC time-series regressions of strategy net returns on the CAPM market factor and the Indian Institute of Management Ahmedabad (IIMA) four-factor benchmark \citep{agarwalla2014four}.
 
+
+
 \begin{table}[htbp]
+
 \centering
+
 \caption{Risk Factor Loadings and Institutional Alphas}
+
 \label{tab:table3}
+
 \small
+
 \begin{tabular}{lcccccc}
+
 \toprule
+
 \textbf{Strategy} & \textbf{IIMA $\alpha$ (pa)} & \textbf{$\beta_{\text{MKT}}$} & \textbf{$\beta_{\text{SMB}}$} & \textbf{$\beta_{\text{HML}}$} & \textbf{$\beta_{\text{WML}}$} & \textbf{^2$} \\
+
 \midrule
+
 Strategy A (Gatev Pairs)      & -31.78\% & 0.01  & -0.01 &  0.01 &  0.01 & 0.000 \\
+
 Strategy B (PCA-OU Reversion) & -23.18\% & 0.01  &  0.04 & -0.04 & -0.01 & 0.003 \\
+
 Strategy C (ML Walk-Forward)  & -32.46\% & -0.00 &  0.01 & -0.02 &  0.01 & 0.001 \\
+
 \bottomrule
+
 \end{tabular}
+
 \end{table}
 
+
+
 Across all three frameworks, the market beta $\beta_{\text{MKT}}$ is statistically zero ($|\beta_{\text{MKT}}| \le 0.01$), and factor model ^2$ values remain below 0.3\%. The strategies exhibit negligible loading on Size (SMB), Value (HML), and Momentum (WML). This demonstrates that the negative net returns are not caused by directional market drops or factor tilts, but represent pure transaction friction drag superimposed on a market-neutral baseline.
+

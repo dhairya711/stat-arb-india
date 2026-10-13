@@ -6,20 +6,20 @@ Trading statistical arbitrage in India requires navigating a fundamentally diffe
 \subsection{Dated Statutory Fee Architecture}
 Unlike jurisdictions with negotiated or zero-commission fee tiers, Indian futures transactions incur statutory government taxes and exchange fees that apply to all institutional participants \citep{bose2007securities}:
 \begin{enumerate}
-    \item \textbf{Securities Transaction Tax (STT):} Imposed exclusively on the sell side of futures transactions. Historically fixed at 0.0125\% (.25$ bps), STT was raised by 60\% to 0.0200\% (.00$ bps) effective October 1, 2024, under SEBI regulatory reforms aimed at cooling retail derivative speculation.
-    \item \textbf{Stamp Duty:} Standardized nationwide under the Indian Stamp Act at 0.0020\% (.20$ bps) on the buy side.
-    \item \textbf{Exchange Transaction Charges (NSE):} Blended rate of 0.0019\% (.19$ bps) levied on both buy and sell legs (.38$ bps round-trip).
-    \item \textbf{SEBI Turnover Fees:} Fixed regulatory levy of 0.0001\% (.01$ bps) on both legs (.02$ bps round-trip).
-    \item \textbf{Goods and Services Tax (GST):} 18.0\% tax levied on brokerage and exchange transaction fees ($\approx 0.12$ bps round-trip).
+    \item \textbf{Securities Transaction Tax (STT):} Imposed exclusively on the sell side of futures transactions. Historically fixed at .0125\%$ (.25$ bps), STT was raised by \%$ to .0200\%$ (.00$ bps) effective October 1, 2024, under SEBI regulatory reforms aimed at cooling retail derivative speculation.
+    \item \textbf{Stamp Duty:} Standardized nationwide under the Indian Stamp Act at .0020\%$ (.20$ bps) on the buy side.
+    \item \textbf{Exchange Transaction Charges (NSE):} Blended rate of .0019\%$ (.19$ bps) levied on both buy and sell legs (.38$ bps round-trip).
+    \item \textbf{SEBI Turnover Fees:} Fixed regulatory levy of .0001\%$ (.01$ bps) on both legs (.02$ bps round-trip).
+    \item \textbf{Goods and Services Tax (GST):} .0\%$ tax levied on brokerage and exchange transaction fees ($\approx 0.12$ bps round-trip).
 \end{enumerate}
 
 \subsection{Execution Slippage and Liquidity Microstructure}
 Following the market microstructure frameworks of \citet{roll1984simple}, \citet{lesmond1999new}, and \citet{amihud2002illiquidity}, real-world execution friction consists of both explicit tax charges and implicit market impact slippage. To accurately reflect institutional execution constraints without assuming infinite liquidity \citep{frazzini2018trading}, we model execution slippage using Average Daily Traded Value (ADTV) liquidity tiers:
 \begin{equation}
     \text{Slippage}_{\text{tier}} = \begin{cases}
-        2.0\text{ bps per leg (}4.0\text{ bps round-trip)} & \text{if ADTV} \ge \text{\textrupee} 100\text{ Crore} \\
-        5.0\text{ bps per leg (}10.0\text{ bps round-trip)} & \text{if \textrupee} 25\text{ Crore} \le \text{ADTV} < \text{\textrupee} 100\text{ Crore} \\
-        10.0\text{ bps per leg (}20.0\text{ bps round-trip)} & \text{if ADTV} < \text{\textrupee} 25\text{ Crore}
+        2.0 \text{ bps per leg (}4.0\text{ bps round-trip)} & \text{if ADTV} \ge \text{\text{Rs.}}100\text{ Cr} \\
+        5.0 \text{ bps per leg (}10.0\text{ bps round-trip)} & \text{if \text{Rs.}}25\text{ Cr} \le \text{ADTV} < \text{\text{Rs.}}100\text{ Cr} \\
+        10.0 \text{ bps per leg (}20.0\text{ bps round-trip)} & \text{if ADTV} < \text{\text{Rs.}}25\text{ Cr}
     \end{cases}
 \end{equation}
 
