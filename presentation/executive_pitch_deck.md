@@ -6,7 +6,7 @@
 ## Slide 1: Executive Title & Core Business Problem
 **Title:** The Microstructure Mirage: Does Statistical Arbitrage Survive in Indian F&O Stocks?  
 **Subtitle:** Methodological Replication, ML Extensions, and the Anatomy of Transaction Cost Erosion (2010–2025)  
-**Presenter:** Quantitative Finance Research Engineer & Data Analytics Portfolio  
+**Presenter:** Dhairya Dani (VIT Bhopal) | Quantitative Finance & Machine Learning  
 **Target Audience:** Chief Investment Officers, Quant Desk Heads, Institutional Allocators  
 
 **The Multi-Crore Problem Statement:**
