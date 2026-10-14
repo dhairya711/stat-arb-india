@@ -347,4 +347,6 @@ These are the ONLY things that kill the paper. Checked and verified at every pha
 - [x] Checkpoint A (Data Pipeline) — ✅ PASSED
 - [x] Checkpoint B (Strategy Code & Placebos) — ✅ PASSED
 - [x] Checkpoint C (Experiments & Results) — ✅ PASSED
+- [x] SSRN Working Paper Distribution — ✅ PASSED (Abstract ID: 7607942, Oct 14, 2026)
+- [x] Journal Submission (IIM Ahmedabad / Vikalpa) — ✅ SUBMITTED (Manuscript ID: VIK-26-0785, Oct 14, 2026)
 - [x] Master Project: 100% COMPLETE & VERIFIED
