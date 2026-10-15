@@ -37,6 +37,30 @@ This project delivers an exhaustive, institutional-grade, out-of-sample investig
 
 ---
 
+
+---
+
+## 📈 Visual Analytics & Key Empirical Charts
+
+<div align="center">
+
+### Cumulative Returns: Gross Alpha vs. Net Microstructure Reality (2010–2025)
+<img src="results/figures/fig1_cumulative_returns_gross_net.png" alt="Cumulative Returns" width="850"/>
+
+<br/><br/>
+
+| Max Drawdown Profile | Rolling 3-Year Sharpe Ratio |
+| :---: | :---: |
+| <img src="results/figures/fig2_drawdown.png" alt="Drawdowns" width="420"/> | <img src="results/figures/fig3_rolling_sharpe.png" alt="Rolling Sharpe" width="420"/> |
+
+<br/>
+
+| Cost Sensitivity & Breakeven Curves | Machine Learning Feature Attributions |
+| :---: | :---: |
+| <img src="results/figures/fig5_cost_sensitivity_curve.png" alt="Cost Sensitivity" width="420"/> | <img src="results/figures/fig8_ml_feature_importance.png" alt="ML Importance" width="420"/> |
+
+</div>
+
 ## 3. Why Machine Learning Exacerbates the Losses
 
 Advanced regularized machine learning (Ridge regression, HistGBM, MLP) successfully increases gross predictive signal quality, elevating gross Sharpe from $+1.28$ to $+1.54$.
@@ -204,7 +228,7 @@ python database/load.py --verify
 ```bibtex
 @article{stat_arb_india_2026,
   title={Does Statistical Arbitrage Survive in Indian F&O Stocks? Distance Pairs, PCA-Residual Mean Reversion, and ML-Enhanced Residual Reversion, 2010--2025},
-  author={Quantitative Finance Research Engineer},
+  author={Dani, Dhairya},
   journal={Working Paper},
   year={2026}
 }
