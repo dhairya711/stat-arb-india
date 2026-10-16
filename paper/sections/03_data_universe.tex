@@ -29,3 +29,13 @@ To check whether strategy returns reflect true idiosyncratic alpha rather than u
     \item Momentum factor ($\text{WML}$), and
     \item 91-day Government of India Treasury Bill rate ($R_f$).
 \end{itemize}
+
+% --- EXPANDED ANALYSIS (6000-8000 WORD TARGET) ---
+
+\subsection{Contract Rollovers, Expiry Dynamics, and Factor Models}
+Because the strategy trades single-stock futures contracts, historical backtesting must accurately mirror the real-world operational constraints of contract expiration and roll yields. NSE equity derivative contracts expire on the last Thursday of each calendar month. To avoid distorted expiration-day settlement volatility and delivery assignment obligations, we implement a systematic roll protocol: all active positions in the near-month contract are rolled forward to the next-month contract on the Tuesday preceding expiry week (two trading days prior to final settlement). Roll execution slippage is modeled at 2.0 basis points per leg, reflecting the wider bid-ask spreads typically observed in the calendar roll spread book.
+
+Furthermore, the liquidity profile of single-stock futures exhibits substantial cross-sectional variation. To prevent the backtest from executing in illiquid contracts where quoted prices diverge substantially from executable depth, we implement a rigorous Average Daily Traded Value (ADTV) liquidity filter. Only stocks with a 60-day median ADTV exceeding Rs. 25 Crore are eligible for trading. Slippage is dynamically scaled according to size tiers: 2.0 bps per leg for tier-1 liquid names (ADTV >= Rs. 100 Crore), 5.0 bps per leg for tier-2 names (Rs. 25 Cr <= ADTV < Rs. 100 Cr), and 10.0 bps per leg for smaller names. This tiered modeling ensures that the reported results reflect achievable institutional execution rather than theoretical mid-quote fills.
+
+To assess whether strategy returns represent genuine idiosyncratic alpha or mere compensation for systematic factor risk, we benchmark performance against the Indian Institute of Management Ahmedabad (IIMA) four-factor asset pricing model (Agarwalla, Jacob, \& Varma 2014). This model adapts the Fama \& French (1993) and Carhart (1997) methodology to the Indian equity market by constructing daily factor portfolios: Market risk premium (MKT), Size (Small Minus Big, SMB), Value (High Minus Low, HML), and Momentum (Winners Minus Losers, WML). In emerging markets like India, factor dynamics exhibit distinctive characteristics, including pronounced retail-driven momentum cycles and persistent state-owned enterprise (SOE) valuation discounts, making empirical factor neutralization critical for validating statistical arbitrage claims.
+

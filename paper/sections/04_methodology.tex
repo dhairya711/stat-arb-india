@@ -52,3 +52,21 @@ To see whether modern machine learning can improve residual trading \citep{gu202
 All return series are evaluated using \citet{newey1987simple} HAC $t$-statistics with Bartlett kernel bandwidth $L = 4(T/100)^{2/9}$. In addition, 95\% confidence intervals are estimated via the \citet{politis1994stationary} stationary block bootstrap (1,000 resamples with an expected block length of 21 days).
 
 To guard against data-snooping across our 12 pre-registered specifications, we calculate the Deflated Sharpe Ratio (DSR) of \citet{bailey2014deflated} and apply \citet{benjamini1995controlling} False Discovery Rate (FDR) adjustments.
+
+% --- EXPANDED ANALYSIS (6000-8000 WORD TARGET) ---
+
+\subsection{Mathematical Formulations and Econometric Validation}
+The mathematical modeling of idiosyncratic residuals under Strategy B relies on the continuous-time Ornstein-Uhlenbeck (OU) mean-reverting stochastic process. For cumulative residual series $X_{i,t}$, the process satisfies:
+
+d$X_{i,t}$ = $\kappa_i$ * ($\theta_i$ - $X_{i,t}$) dt + $\sigma_i$ * $dW_{i,t}$
+
+where $\kappa_i$ represents the speed of mean reversion, $\theta_i$ denotes the long-term equilibrium mean (which theoretically equals zero in an efficient factor model), $\sigma_i$ is the diffusion volatility, and W\_{i,t} is a standard Wiener process. In discrete daily time steps ($\Delta t$ = 1/252), this stochastic equation corresponds to a stationary first-order autoregressive AR(1) process: $X_{i,t}$ = a\_i + b\_i * X\_{i,t-1} + eta\_{i,t}. The structural parameters are estimated via Ordinary Least Squares over a rolling 60-day window:
+
+$\kappa_i$ = - ln(b\_i) / $\Delta t$,   $\theta_i$ = a\_i / (1 - b\_i),   $\sigma_{eq,i}$ = sigma\_eta / sqrt(1 - b\_i^2)
+
+The characteristic half-life of mean reversion is given by $\tau_i$ = ln(2) / $\kappa_i$. Only residual series exhibiting a strictly positive speed of mean reversion ($\kappa_i$ > 0, corresponding to 0 < b\_i < 1) and a realistic half-life between 2 and 30 trading days are retained for trade execution. If the estimated half-life exceeds 30 days, the reversion speed is deemed too sluggish to cover carry costs and statutory levies.
+
+For Strategy C, we implement expanding-window walk-forward validation across the 2016–2025 out-of-sample period. To prevent information leakage arising from overlapping holding periods and serial autocorrelation in residuals, we strictly enforce a 10-day purging window between training and test sets, following the combinatorial purged cross-validation principles of Lopez de Prado (2018). Models are retrained semi-annually on an expanding historical window starting in January 2010. Feature engineering incorporates ten standardized predictors: normalized s-scores, multi-horizon residual return lags (1, 5, 10, 20, and 60 days), 22-day rolling residual volatility, 5-day volume acceleration, turnover ratios, and cross-sectional return rankings.
+
+To address the severe multiple-testing bias inherent in quantitative backtesting (Harvey, Liu, \& Zhu 2016), we apply the Deflated Sharpe Ratio (DSR) developed by Bailey \& Lopez de Prado (2014). The DSR statistically adjusts the estimated Sharpe ratio for the number of tested model variations (N=12), the non-normality (skewness and kurtosis) of the daily return distribution, and the length of the sample period, establishing whether observed performance could have arisen purely through data-mining. In addition, we apply the Benjamini \& Hochberg (1995) False Discovery Rate (FDR) control at alpha = 0.05 across all 12 pre-registered model specifications.
+
